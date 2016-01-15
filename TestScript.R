@@ -9,3 +9,5 @@ windows()
 plot(cyl,mpg)
 
 # End of this script
+
+# <(*.*<) (>*.*)> <(*.*)> ^(*.*)^ <(*.*)>
