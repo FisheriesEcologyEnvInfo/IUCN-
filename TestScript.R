@@ -6,6 +6,6 @@
 
 attach(mtcars)
 windows()
-plot(cyl,mpg)
+plot(cyl,mpg, col="blue")
 
 # End of this script
