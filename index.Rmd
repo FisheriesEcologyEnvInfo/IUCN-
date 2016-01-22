@@ -78,7 +78,6 @@ If you’d like more information about how these tools can meet your data manage
 ##Plans for archiving and preservation of access
 
 Describe your long-term strategy for archiving and preserving your data. EAR encourages PIs to submit data to an “EAR-specified” repository. Consider the following:
->>>>>>> c83c0db243162cc162717e9825c8e27cc8704cd5
 
 What is the long-term strategy for maintaining, curating and archiving the data?
 Which archive/repository/database have you identified as a place to deposit data?
