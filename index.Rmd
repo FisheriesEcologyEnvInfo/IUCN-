@@ -7,15 +7,22 @@ output: html_document
 
  ##Types of data
  
+ Testing
  
  ##Data and metadata standards
  
+ Testing2
  
  ##Policies for access and sharing
  
+ Testing3
  
  ##Policies and provisions for re-use, re-distribution
  
+ Testing4
  
  ##Plans for archiving and preservation of access
+ 
+ Testing5
+
 
