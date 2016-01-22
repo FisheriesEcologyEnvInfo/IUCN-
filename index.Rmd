@@ -48,10 +48,6 @@ What resources will be needed to reuse the data? Examples include software or eq
 What is the process for gaining access to the data?
 Who are the foreseeable data users?
 How should your data be cited?
-
-Testing4
- 
-##Plans for archiving and preservation of access
  
 Testing5
 
