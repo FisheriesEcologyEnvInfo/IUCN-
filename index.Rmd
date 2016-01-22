@@ -21,7 +21,7 @@ What is the relationship between the data you are collecting and any existing da
 How will the data be processed?
 What quality assurance & quality control measures will you employ?
  
- Testing
+Testing
  
 ##Data and metadata standards
  
@@ -35,13 +35,12 @@ Additional help for: University of California, Santa Barbara
 
 Please contact uc3@ucop.edu with any questions about creating data that will be "preservation-ready." We provide consultation and advice on file formats, metadata, identifiers, workflows and long-term preservation.
  
- Testing2
+Testing2
  
 ##Policies for access and sharing
  
-<<<<<<< HEAD
- Testing3
-=======
+Testing3
+
 Specify how you will share your data with others after the project is completed. Ideally, you will use an appropriate open-access discipline-specific data repository; regardless of the repository you choose, describe how you chose it. Consider these questions:
 
 How, when, and where will you make the data available?
@@ -49,17 +48,13 @@ What resources will be needed to reuse the data? Examples include software or eq
 What is the process for gaining access to the data?
 Who are the foreseeable data users?
 How should your data be cited?
->>>>>>> c83c0db243162cc162717e9825c8e27cc8704cd5
- 
- 
-<<<<<<< HEAD
- Testing4
- 
- ##Plans for archiving and preservation of access
- 
- Testing5
 
-=======
+Testing4
+ 
+##Plans for archiving and preservation of access
+ 
+Testing5
+
 ##Policies and provisions for re-use, re-distribution
  
 Describe policies surrounding the re-use of your data – the EAR division is specifically interested in how soon you will make your data available. If you will not be making the data available for re-use immediately, explain why. Remember that EAR specifies that you must make your data available no later than two years after your research is complete. If there are other policy issues regarding data access and re-use (ethical or privacy issues, for instance) elaborate on them here. Consider these questions:
