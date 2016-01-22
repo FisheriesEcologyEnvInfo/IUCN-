@@ -1,10 +1,11 @@
 ---
-title: "Testing R Markdown"
-author: "Fish-Ecol"
-date: "January 9, 2016"
+title: "Fish-Ecol Org"
+author: "Hartline, N., Mayorga-Henao, J., Villaseñor-Derbez, J.C."
 output:
   html_document:
-  theme: cerulean
+    theme: cerulean
+    toc: true
+    toc_depth: 2
 ---
 
 ##Types of data
