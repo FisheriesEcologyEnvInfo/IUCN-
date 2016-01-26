@@ -9,7 +9,26 @@ output:
 ---
 
 ##Types of data
- 
+
+
+We have the following data:
+
+- IUCN (Niko, what do we have here?)
+- Hunter-data (Juan?)
+- *Pterois volitans*
+    - Dietary items
+    - Length - Weight
+- Mexican Tuna Purse Seine fleet
+      - Catch data (2013 & 2014)
+      - Landings (2000 - 2013)
+- Kelp forest (TURF-reserve vs. fishing)
+    - Fish
+    - Invertebrates
+    - Algal cover
+    - Habitat
+- Any other ideas?
+
+
 Provide a description of the data you will collect or re-use, including the file types, dataset size, number of expected files or sets, and content. Data types could include text, spreadsheets, images, 3D models, software, audio files, video files, reports, surveys, patient records, etc. Data that underlie the findings reported in a journal article or conference paper should be deposited in accordance with the policies of the publication and according to the procedures laid out in the DMP included in the proposal that led to the award on which the research is based. 
 
 Consider the following:
@@ -22,7 +41,6 @@ What is the relationship between the data you are collecting and any existing da
 How will the data be processed?
 What quality assurance & quality control measures will you employ?
  
-Testing
  
 ##Data and metadata standards
  
@@ -36,11 +54,9 @@ Additional help for: University of California, Santa Barbara
 
 Please contact uc3@ucop.edu with any questions about creating data that will be "preservation-ready." We provide consultation and advice on file formats, metadata, identifiers, workflows and long-term preservation.
  
-Testing2
  
 ##Policies for access and sharing
  
-Testing3
 
 Specify how you will share your data with others after the project is completed. Ideally, you will use an appropriate open-access discipline-specific data repository; regardless of the repository you choose, describe how you chose it. Consider these questions:
 
@@ -50,7 +66,6 @@ What is the process for gaining access to the data?
 Who are the foreseeable data users?
 How should your data be cited?
  
-Testing5
 
 ##Policies and provisions for re-use, re-distribution
  
@@ -84,3 +99,73 @@ What data will be preserved for the long-term?
 What transformations will be necessary to prepare data for preservation / data sharing?
 What metadata/ documentation will be submitted alongside the data or created on deposit/ transformation in order to make the data reusable?
 What related information will be deposited?
+
+##Data question(s)
+
+We first load the packages that we are going to need:
+
+```{r, echo=TRUE, warning=FALSE}
+
+library(readr)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(knitr)
+library(rworldmap)
+library(ggmap)
+
+```
+
+
+### Option 1 *Pterois volitans*
+
+This first option is from lionfish dietary items
+
+```{r, echo=TRUE, fig.cap="Map of sampling sites for *P. volitans*"}
+
+pvol=read_delim("Data/Pvolitans_JCVD.csv", ";")
+
+# I build a column "CLASS", where i will distinguish between fish and crustacean
+
+Class=pvol$Item_Genus_species
+Class[]="Fish"
+
+# Samples only had three crustaceans
+Class[pvol$Item_Genus_species=="Callinectes_sapidus"]="Crustacean"
+Class[pvol$Item_Genus_species=="Mysidium_spp"]="Crustacean"
+Class[pvol$Item_Genus_species=="Lysmata_sp"]="Crustacean"
+pvol=data.frame(pvol, Class)
+
+# We make a map
+newmap=get_map(location=c(longitude=-87.25, latitude=20.45), zoom=12, maptype="watercolor")
+ggmap(newmap)+
+  geom_point(data=pvol, aes(x=Longitude, y=Latitude, col=Location), size=4)
+```
+
+
+```{r, echo=TRUE}
+species= pvol %>%
+  select(Id, Location, Latitude, Longitude, Depth_m, TotalLength_cm, TotalWeigth_gr, Item_Genus_species, Class) %>%
+  filter(!Item_Genus_species=="unid") %>%
+  filter(!Item_Genus_species=="empty") %>%
+  group_by(Class, Item_Genus_species) %>%
+  summarize(n=n())
+
+kable(species)
+
+```
+
+```{r, echo=TRUE, fig.cap="Length - Weight relationship for *P. volitans*"}
+
+ggplot(data=pvol, aes(x=TotalLength_cm, y=TotalWeigth_gr, col=Location))+
+  geom_point()+
+  theme_bw()+
+  labs(x="Total length (cm)", y="Total Weight (gr)")
+
+```
+
+
+### Option 2 Fish (IUCN)
+
+
+### Option 3 Hunter-data
