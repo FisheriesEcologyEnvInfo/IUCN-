@@ -15,19 +15,25 @@ We have the following data:
 
 - IUCN (Niko, what do we have here?)
 - Hunter-data (Juan?)
-- *Pterois volitans*
-    - Dietary items
+- *Pterois volitans* $^1$
+    - [Dietary items](http://www.panamjas.org/pdf_artigos/PANAMJAS_9(2)_131-135.pdf)
     - Length - Weight
-- Mexican Tuna Purse Seine fleet
+- Mexican Tuna Purse Seine fleet $^1$ $^2$
       - Catch data (2013 & 2014)
       - Landings (2000 - 2013)
-- Kelp forest (TURF-reserve vs. fishing)
+- Kelp forest (TURF-reserve vs. fishing) $^1$
     - Fish
     - Invertebrates
     - Algal cover
     - Habitat
 - Any other ideas?
 
+
+**NOTES**
+
+ $^1$ All this is in *"long format"*.
+ 
+ $^2$ I need to confirm that we can use this, don't think that's a problem.
 
 Provide a description of the data you will collect or re-use, including the file types, dataset size, number of expected files or sets, and content. Data types could include text, spreadsheets, images, 3D models, software, audio files, video files, reports, surveys, patient records, etc. Data that underlie the findings reported in a journal article or conference paper should be deposited in accordance with the policies of the publication and according to the procedures laid out in the DMP included in the proposal that led to the award on which the research is based. 
 
@@ -121,7 +127,7 @@ library(ggmap)
 
 This first option is from lionfish dietary items
 
-```{r, echo=TRUE, fig.cap="Map of sampling sites for *P. volitans*"}
+```{r, echo=FALSE, fig.cap="Map of sampling sites for *P. volitans*"}
 
 pvol=read_delim("Data/Pvolitans_JCVD.csv", ";")
 
@@ -137,7 +143,7 @@ Class[pvol$Item_Genus_species=="Lysmata_sp"]="Crustacean"
 pvol=data.frame(pvol, Class)
 
 # We make a map
-newmap=get_map(location=c(longitude=-87.25, latitude=20.45), zoom=12, maptype="watercolor")
+newmap=get_map(location=c(longitude=-87.25, latitude=20.45), zoom=12, maptype="terrain")
 ggmap(newmap)+
   geom_point(data=pvol, aes(x=Longitude, y=Latitude, col=Location), size=4)
 ```
@@ -149,13 +155,14 @@ species= pvol %>%
   filter(!Item_Genus_species=="unid") %>%
   filter(!Item_Genus_species=="empty") %>%
   group_by(Class, Item_Genus_species) %>%
-  summarize(n=n())
-
-kable(species)
-
+  summarize(Abundance=n())
 ```
 
-```{r, echo=TRUE, fig.cap="Length - Weight relationship for *P. volitans*"}
+**Table I-** Dietary items from **P. volitans**
+
+
+
+```{r, echo=FALSE, fig.cap="Length - Weight relationship for *P. volitans*"}
 
 ggplot(data=pvol, aes(x=TotalLength_cm, y=TotalWeigth_gr, col=Location))+
   geom_point()+
@@ -165,7 +172,40 @@ ggplot(data=pvol, aes(x=TotalLength_cm, y=TotalWeigth_gr, col=Location))+
 ```
 
 
-### Option 2 Fish (IUCN)
+### Option 2 Tuna (FIDEMAR)
+
+```{r, echo=FALSE, fig.cap="Tuna catches made by the Mexican Tuna Purse Seine Fleet in 2013 and 2014"}
+
+tuna=read_delim("Data/tuna_JCVD.csv", ";")
+
+lon=mean(unique(tuna$Longitude))
+lat=mean(unique(tuna$Latitude))
+
+newmap=get_map(location=c(longitude=lon, latitude=lat), zoom=4, maptype="terrain")
+
+ggmap(newmap)+
+  geom_point(data=tuna, aes(x=Longitude, y=Latitude, col=Catch_t))+
+  facet_grid(. ~ Year)
+```
 
 
-### Option 3 Hunter-data
+```{r, echo=TRUE}
+
+summary = tuna %>%
+  select(Cruise, Year, Type, Cast, Latitude, Longitude, Catch_t, Length_cm) %>%
+  group_by(Type, Year) %>%
+  summarize(mean_length_cm=mean(Length_cm), catch_t=sum(Catch_t))
+```
+
+**Table II-** Mean size and total catch per type of cast. LANMAM = casts with tuna and dolphins, LANATUN = casts on free swimming tuna, LANPALO = casts ontuna with FADS.
+
+```{r, echo=FALSE}
+kable(summary)
+```
+
+
+
+### Option 3 Fish (IUCN)
+
+
+### Option 4 Hunter-data
