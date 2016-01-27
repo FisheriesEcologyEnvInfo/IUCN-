@@ -3,8 +3,9 @@ title: "Fish-Ecol Org"
 author: "Hartline, N., Mayorga-Henao, J., Villaseñor-Derbez, J.C."
 output:
   html_document:
+    fig_caption: yes
     theme: cerulean
-    toc: true
+    toc: yes
     toc_depth: 2
 ---
 
@@ -156,9 +157,28 @@ species= pvol %>%
   filter(!Item_Genus_species=="empty") %>%
   group_by(Class, Item_Genus_species) %>%
   summarize(Abundance=n())
+
+samples= pvol %>%
+  filter(!Item_Genus_species=="unid") %>%
+  filter(!Item_Genus_species=="empty") %>%
+  select(Id, Location) %>%
+  group_by(Location) %>%
+  summarize(Samples=n())
 ```
 
-**Table I-** Dietary items from **P. volitans**
+**Table I-* Number of samples (fish) for each location.
+
+```{r, echo=FALSE}
+kable(samples)
+```
+
+
+
+**Table II-** Dietary items from *P. volitans*
+
+```{r, echo=FALSE}
+kable(species)
+```
 
 
 
@@ -174,6 +194,8 @@ ggplot(data=pvol, aes(x=TotalLength_cm, y=TotalWeigth_gr, col=Location))+
 
 ### Option 2 Tuna (FIDEMAR)
 
+This is a big one; the database has a total of 51,799 records (organisms) of tuna catched between 2013 and 2014.
+
 ```{r, echo=FALSE, fig.cap="Tuna catches made by the Mexican Tuna Purse Seine Fleet in 2013 and 2014"}
 
 tuna=read_delim("Data/tuna_JCVD.csv", ";")
@@ -188,16 +210,15 @@ ggmap(newmap)+
   facet_grid(. ~ Year)
 ```
 
-
 ```{r, echo=TRUE}
 
 summary = tuna %>%
   select(Cruise, Year, Type, Cast, Latitude, Longitude, Catch_t, Length_cm) %>%
   group_by(Type, Year) %>%
-  summarize(mean_length_cm=mean(Length_cm), catch_t=sum(Catch_t))
+  summarize(mean_length_cm=mean(Length_cm), SD=sd(Length_cm))
 ```
 
-**Table II-** Mean size and total catch per type of cast. LANMAM = casts with tuna and dolphins, LANATUN = casts on free swimming tuna, LANPALO = casts ontuna with FADS.
+**Table I-** Mean size and total catch per type of cast. LANMAM = casts with tuna and dolphins, LANATUN = casts on free swimming tuna, LANPALO = casts ontuna with FADS.
 
 ```{r, echo=FALSE}
 kable(summary)
