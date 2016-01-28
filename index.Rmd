@@ -15,7 +15,9 @@ output:
 We have the following data:
 
 - IUCN (Niko, what do we have here?)
-- Hunter-data (Juan?)
+- Hunt-data
+    - This data set contains estimates of population abundance for 5 species of reef fish and their associated recruitment habitat. The data was collected in 2002 and 2014 at two lagoons in French Polynesia that have contrasting anthropogenic pressures. 
+  
 - *Pterois volitans* $^1$
     - [Dietary items](http://www.panamjas.org/pdf_artigos/PANAMJAS_9(2)_131-135.pdf)
     - Length - Weight
@@ -113,13 +115,13 @@ We first load the packages that we are going to need:
 
 ```{r, echo=TRUE, warning=FALSE}
 
-library(readr)
-library(dplyr)
-library(tidyr)
-library(ggplot2)
-library(knitr)
-library(rworldmap)
-library(ggmap)
+suppressWarnings(suppressMessages(library(readr)))
+suppressWarnings(suppressMessages(library(dplyr)))
+suppressWarnings(suppressMessages(library(tidyr)))
+suppressWarnings(suppressMessages(library(ggplot2)))
+suppressWarnings(suppressMessages(library(knitr)))
+suppressWarnings(suppressMessages(library(rworldmap)))
+suppressWarnings(suppressMessages(library(ggmap)))
 
 ```
 
@@ -230,3 +232,5 @@ kable(summary)
 
 
 ### Option 4 Hunter-data
+
+
