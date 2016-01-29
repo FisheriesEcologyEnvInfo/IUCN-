@@ -168,12 +168,13 @@ samples= pvol %>%
   summarize(Samples=n())
 ```
 
-**Table I-* Number of samples (fish) for each location.
+**Table I-** Number of samples (fish) for each location.
 
 ```{r, echo=FALSE}
 kable(samples)
 ```
 
+#### What do *P. volitans* feed on?
 
 
 **Table II-** Dietary items from *P. volitans*
@@ -183,13 +184,41 @@ kable(species)
 ```
 
 
+```{r, echo=FALSE, fig.cap="Dietary items from *P.volitans* "}
+
+ggplot(species, aes(Item_Genus_species, Abundance))+
+  geom_bar(stat = "identity", aes(fill=Class))+
+  coord_flip()+
+  scale_fill_brewer(palette="Set1")+
+  theme_bw()+
+  theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank())+
+  theme(panel.grid.minor.y=element_blank(), panel.grid.major.y=element_blank())+
+  labs(x='Species',y='N')
+
+```
+
+
+
+#### What is the length - weigth relationship of *P. volitans*?
 
 ```{r, echo=FALSE, fig.cap="Length - Weight relationship for *P. volitans*"}
+#
+model=lm(log(TotalWeigth_gr)~log(TotalLength_cm), data=pvol)
+TL=seq(0,35,.1)
+W=exp(predict(model,list(TotalLength_cm=TL)))
 
-ggplot(data=pvol, aes(x=TotalLength_cm, y=TotalWeigth_gr, col=Location))+
-  geom_point()+
+M=data.frame(TL,W)
+
+ggplot(data=pvol, aes(x=TotalLength_cm, y=TotalWeigth_gr))+
+  geom_point(aes(col=Location), size=2)+
   theme_bw()+
-  labs(x="Total length (cm)", y="Total Weight (gr)")
+  labs(x="Total length (cm)", y="log[Total Weight (gr)]")+
+  theme(panel.grid.minor.x=element_blank(),  panel.grid.major.x=element_blank())+
+  theme(panel.grid.minor.y=element_blank(), panel.grid.major.y=element_blank())+
+  geom_line(data=M, aes(TL,W))+
+  annotate(geom="text", x=10, y=500, label="TW = 0.0058 TL^3.20")+
+  annotate(geom="text", x=10, y=470, label="b1 = 3.20, t(166) = 96.76, p > 0.05")+
+  annotate(geom="text", x=10, y=440, label="r^2 = 0.98, F(1,166) = 9363, p < 0.05")
 
 ```
 
@@ -198,7 +227,11 @@ ggplot(data=pvol, aes(x=TotalLength_cm, y=TotalWeigth_gr, col=Location))+
 
 This is a big one; the database has a total of 51,799 records (organisms) of tuna catched between 2013 and 2014.
 
-```{r, echo=FALSE, fig.cap="Tuna catches made by the Mexican Tuna Purse Seine Fleet in 2013 and 2014"}
+#### Where do the larger catches occur?
+
+We divide type of casts into three categories: tuna associated with dolphins, free swimming tuna, and tuna associated with Fishing Aggregation Devices (FADs).Do different types of casts yield different catches? Is there a spatial pattern for this?
+
+```{r, echo=FALSE, fig.cap="Tuna catches made by the Mexican Tuna Purse Seine Fleet in 2013 and 2014 by type of cast"}
 
 tuna=read_delim("Data/tuna_JCVD.csv", ";")
 
@@ -209,23 +242,39 @@ newmap=get_map(location=c(longitude=lon, latitude=lat), zoom=4, maptype="terrain
 
 ggmap(newmap)+
   geom_point(data=tuna, aes(x=Longitude, y=Latitude, col=Catch_t))+
-  facet_grid(. ~ Year)
+  labs(x="Longitude", y="Latitude")+
+  facet_grid(Year~Type)
 ```
 
-```{r, echo=TRUE}
 
+#### Are there differences in sizes based on type of cast?
+
+Are there differences in sizes based on these types of casts?
+
+```{r, echo=TRUE}
 summary = tuna %>%
   select(Cruise, Year, Type, Cast, Latitude, Longitude, Catch_t, Length_cm) %>%
   group_by(Type, Year) %>%
   summarize(mean_length_cm=mean(Length_cm), SD=sd(Length_cm))
 ```
 
-**Table I-** Mean size and total catch per type of cast. LANMAM = casts with tuna and dolphins, LANATUN = casts on free swimming tuna, LANPALO = casts ontuna with FADS.
 
-```{r, echo=FALSE}
-kable(summary)
+```{r, echo=FALSE, fig.cap="Mean total length (cm) of tuna based on type of cast. Bars indicate 1 SD. LANMAM = casts with tuna and dolphins, LANATUN = casts on free swimming tuna, LANPALO = casts ontuna with FADS."}
+
+Year=summary$Year
+Year[Year==2013]="2013"
+Year[Year==2014]="2014"
+summary[,2]=Year
+
+ggplot(summary, aes(x=Type, y=mean_length_cm, fill=Year))+
+  geom_bar(position=position_dodge(0.9), stat="identity")+
+  geom_errorbar(position=position_dodge(0.9), width=0.25, aes(ymin=mean_length_cm-SD, ymax=mean_length_cm+SD))+
+  scale_fill_brewer(palette="Set1")+
+  theme_bw()+
+  theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank())+
+  theme(panel.grid.minor.y=element_blank(), panel.grid.major.y=element_blank())+
+  labs(x="Type of Cast", y="Total length (cm)")
 ```
-
 
 
 ### Option 3 Fish (IUCN)
@@ -248,7 +297,9 @@ change<- fish %>%
   spread(year, Adults) %>% 
   mutate(Change =100*(`2014`-`2002`)/`2002`) 
 kable(change)
+```
 
+```{r, echo=FALSE, fig.cap="Relative change in mean density of adults (individuals per 100m2 of reef)"}
 ggplot(change, aes(Species, Change)) +
   geom_bar(stat = "identity", aes(fill = Island),position=position_dodge(), width=.5)+
   scale_fill_brewer(palette="Set1")+
@@ -256,7 +307,7 @@ ggplot(change, aes(Species, Change)) +
   geom_hline(yintercept = 0)+
   theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank())+
   theme(panel.grid.minor.y=element_blank(), panel.grid.major.y=element_blank())+
-  labs(x='Species',y='% Change in Mean density of adults (individuals per 100m2 of reef)')
+  labs(x='Species',y='% Change')
 ```
 
 
