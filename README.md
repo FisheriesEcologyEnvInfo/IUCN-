@@ -1,2 +1,7 @@
 # IUCN
-Repository to store and analyze IUCN fish data... but also with Hunter's data
+Repository to store and analyze the following data sets: 
+    - IUCN fish data
+    - Reef fishes of French Polynesia (Hunter's data)
+    - Tuna data from Juan Carlos
+    - Lion fish data from Juan Carlos
+
