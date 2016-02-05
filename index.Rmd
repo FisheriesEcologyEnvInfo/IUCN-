@@ -14,7 +14,7 @@ output:
 
 We have the following data:
 
-- IUCN (Niko, what do we have here?)
+- IUCN: Data on endangerment of fish species (Chondricthyes). The data will include trend, global status, country, habitat (freshwater or marine), and other species details. Some of these data sets will need to be joined.
 - Hunt-data
     - This data set contains estimates of population abundance for 5 species of reef fish and their associated recruitment habitat. The data was collected in 2002 and 2014 at two lagoons in French Polynesia that have contrasting anthropogenic pressures. 
   
