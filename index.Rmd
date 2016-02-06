@@ -1,6 +1,6 @@
 ---
 title: "Fish-Ecol Org"
-author: "Hartline, N., Mayorga-Henao, J., Villaseñor-Derbez, J.C."
+author: "Faúndez, P., Hartline, N., Mayorga-Henao, J., Villaseñor-Derbez, J.C."
 output:
   html_document:
     fig_caption: yes
@@ -17,103 +17,29 @@ We have the following data:
 - IUCN: Data on endangerment of fish species (Chondricthyes). The data will include trend, global status, country, habitat (freshwater or marine), and other species details. Some of these data sets will need to be joined.
 - Hunt-data
     - This data set contains estimates of population abundance for 5 species of reef fish and their associated recruitment habitat. The data was collected in 2002 and 2014 at two lagoons in French Polynesia that have contrasting anthropogenic pressures. 
-  
-- *Pterois volitans* $^1$
-    - [Dietary items](http://www.panamjas.org/pdf_artigos/PANAMJAS_9(2)_131-135.pdf)
-    - Length - Weight
-- Mexican Tuna Purse Seine fleet $^1$ $^2$
-      - Catch data (2013 & 2014)
-      - Landings (2000 - 2013)
-- Kelp forest (TURF-reserve vs. fishing) $^1$
-    - Fish
-    - Invertebrates
-    - Algal cover
-    - Habitat
-- Any other ideas?
-
-
-**NOTES**
-
- $^1$ All this is in *"long format"*.
- 
- $^2$ I need to confirm that we can use this, don't think that's a problem.
-
-Provide a description of the data you will collect or re-use, including the file types, dataset size, number of expected files or sets, and content. Data types could include text, spreadsheets, images, 3D models, software, audio files, video files, reports, surveys, patient records, etc. Data that underlie the findings reported in a journal article or conference paper should be deposited in accordance with the policies of the publication and according to the procedures laid out in the DMP included in the proposal that led to the award on which the research is based. 
-
-Consider the following:
-
-What data will be generated in the research?
-What data types will you be creating or capturing?
-How will you capture or create the data?
-If you will be using existing data, state this and include how you will obtain it.
-What is the relationship between the data you are collecting and any existing data?
-How will the data be processed?
-What quality assurance & quality control measures will you employ?
  
  
-##Data and metadata standards
- 
-Datasets need metadata to be usable. Think about what details (metadata) someone else would need to be able to use these files. For example, you may need a readme.txt file to explain variables, structure of the files, etc. Consider the following:
-
-What contextual details (metadata) are needed to make the data you capture or collect meaningful?
-What form will the metadata describing/documenting your data take?
-How will you create or capture these details?
-Which metadata standards will you use and why have you chosen them?
-Additional help for: University of California, Santa Barbara
-
-Please contact uc3@ucop.edu with any questions about creating data that will be "preservation-ready." We provide consultation and advice on file formats, metadata, identifiers, workflows and long-term preservation.
- 
- 
-##Policies for access and sharing
+## Data and metadata standards
  
 
-Specify how you will share your data with others after the project is completed. Ideally, you will use an appropriate open-access discipline-specific data repository; regardless of the repository you choose, describe how you chose it. Consider these questions:
-
-How, when, and where will you make the data available?
-What resources will be needed to reuse the data? Examples include software or equipment.
-What is the process for gaining access to the data?
-Who are the foreseeable data users?
-How should your data be cited?
+ 
+ 
+## Policies for access and sharing
+ 
+ 
+ 
+## Policies and provisions for re-use, re-distribution
  
 
-##Policies and provisions for re-use, re-distribution
- 
-Describe policies surrounding the re-use of your data – the EAR division is specifically interested in how soon you will make your data available. If you will not be making the data available for re-use immediately, explain why. Remember that EAR specifies that you must make your data available no later than two years after your research is complete. If there are other policy issues regarding data access and re-use (ethical or privacy issues, for instance) elaborate on them here. Consider these questions:
 
-When will you make the data available?
-Does the original data collector/creator/principal investigator retain the right to use the data before opening it up to wider use?
-Will any permission restrictions need to be placed on the data?
-How long will the original data collector/creator/principal investigator retain the right to use the data before making them available for wider distribution?
-Are there any embargo periods for political/commercial/patent reasons? If so, give details.
-Are there ethical and privacy issues? If so, how will these be resolved?
-What have you done to comply with your obligations in your IRB Protocol?
-Who will hold the intellectual property rights to the data and how might this affect data access?
-What and who are the intended or foreseeable uses / users of the data?
-Additional help for: University of California, Santa Barbara
-
-EZID, a service from the University of California Curation Center, facilitates data sharing, data reuse, data citation, and data attribution, and creates Digital Object Identifiers (DOI) for research data.
-The Merritt Repository can restrict access to data to just the depositor or to a research group, or make data publicly available. Research data and records will be maintained for as long as they are of continuing value to the researchers and project collaborators. Data will be retained subject to the University of California retention policy.
-If you’d like more information about how these tools can meet your data management requirements, contact uc3@ucop.edu 
+## Plans for archiving and preservation of access
 
 
-##Plans for archiving and preservation of access
 
-Describe your long-term strategy for archiving and preserving your data. EAR encourages PIs to submit data to an “EAR-specified” repository. Consider the following:
+## Data question(s)
 
-What is the long-term strategy for maintaining, curating and archiving the data?
-Which archive/repository/database have you identified as a place to deposit data?
-What procedures does your intended long-term data storage facility have in place for preservation and backup?
-How long will/should data be kept beyond the life of the project?
-What data will be preserved for the long-term?
-What transformations will be necessary to prepare data for preservation / data sharing?
-What metadata/ documentation will be submitted alongside the data or created on deposit/ transformation in order to make the data reusable?
-What related information will be deposited?
 
-##Data question(s)
-
-We first load the packages that we are going to need:
-
-```{r, echo=TRUE, warning=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 
 suppressWarnings(suppressMessages(library(readr)))
 suppressWarnings(suppressMessages(library(dplyr)))
@@ -126,164 +52,60 @@ suppressWarnings(suppressMessages(library(ggmap)))
 ```
 
 
-### Option 1 *Pterois volitans*
+### IUCN Data for Elasmobranchs
 
-This first option is from lionfish dietary items
+```{r,echo=FALSE}
+elasmo <- read_csv("Data/Elasmo.csv")
 
-```{r, echo=FALSE, fig.cap="Map of sampling sites for *P. volitans*"}
-
-pvol=read_delim("Data/Pvolitans_JCVD.csv", ";")
-
-# I build a column "CLASS", where i will distinguish between fish and crustacean
-
-Class=pvol$Item_Genus_species
-Class[]="Fish"
-
-# Samples only had three crustaceans
-Class[pvol$Item_Genus_species=="Callinectes_sapidus"]="Crustacean"
-Class[pvol$Item_Genus_species=="Mysidium_spp"]="Crustacean"
-Class[pvol$Item_Genus_species=="Lysmata_sp"]="Crustacean"
-pvol=data.frame(pvol, Class)
-
-# We make a map
-newmap=get_map(location=c(longitude=-87.25, latitude=20.45), zoom=12, maptype="terrain")
-ggmap(newmap)+
-  geom_point(data=pvol, aes(x=Longitude, y=Latitude, col=Location), size=4)
+SN=length(unique(elasmo$`Scientific Name`))
+C=length(unique(elasmo$Class))
+O=length(unique(elasmo$Order))
+Fa=length(unique(elasmo$Family))
 ```
 
+Some descriptive stuff for us to know what we have.
 
-```{r, echo=TRUE}
-species= pvol %>%
-  select(Id, Location, Latitude, Longitude, Depth_m, TotalLength_cm, TotalWeigth_gr, Item_Genus_species, Class) %>%
-  filter(!Item_Genus_species=="unid") %>%
-  filter(!Item_Genus_species=="empty") %>%
-  group_by(Class, Item_Genus_species) %>%
-  summarize(Abundance=n())
+**Table 1-** Taxonomic summary of the IUCN data.
 
-samples= pvol %>%
-  filter(!Item_Genus_species=="unid") %>%
-  filter(!Item_Genus_species=="empty") %>%
-  select(Id, Location) %>%
-  group_by(Location) %>%
-  summarize(Samples=n())
-```
-
-**Table I-** Number of samples (fish) for each location.
-
-```{r, echo=FALSE}
-kable(samples)
-```
-
-#### What do *P. volitans* feed on?
+Classes | Orders | Families  | Species
+--------|--------|-----------|--------
+`r C`   | `r O`  |  `r Fa`   | `r SN`
 
 
-**Table II-** Dietary items from *P. volitans*
+```{r, echo=FALSE, fig.cap="Categories for ech Order"}
 
-```{r, echo=FALSE}
-kable(species)
-```
-
-
-```{r, echo=FALSE, fig.cap="Dietary items from *P.volitans* "}
-
-ggplot(species, aes(Item_Genus_species, Abundance))+
-  geom_bar(stat = "identity", aes(fill=Class))+
-  coord_flip()+
+ggplot(data=elasmo, aes(Order))+
+  geom_bar(aes(fill=Category))+
   scale_fill_brewer(palette="Set1")+
   theme_bw()+
-  theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank())+
-  theme(panel.grid.minor.y=element_blank(), panel.grid.major.y=element_blank())+
-  labs(x='Species',y='N')
+  coord_flip()
 
 ```
 
+```{r, echo=FALSE, fig.cap="Number of cases by Category"}
 
-
-#### What is the length - weigth relationship of *P. volitans*?
-
-```{r, echo=FALSE, fig.cap="Length - Weight relationship for *P. volitans*"}
-#
-model=lm(log(TotalWeigth_gr)~log(TotalLength_cm), data=pvol)
-TL=seq(0,35,.1)
-W=exp(predict(model,list(TotalLength_cm=TL)))
-
-M=data.frame(TL,W)
-
-ggplot(data=pvol, aes(x=TotalLength_cm, y=TotalWeigth_gr))+
-  geom_point(aes(col=Location), size=2)+
-  theme_bw()+
-  labs(x="Total length (cm)", y="log[Total Weight (gr)]")+
-  theme(panel.grid.minor.x=element_blank(),  panel.grid.major.x=element_blank())+
-  theme(panel.grid.minor.y=element_blank(), panel.grid.major.y=element_blank())+
-  geom_line(data=M, aes(TL,W))+
-  annotate(geom="text", x=10, y=500, label="TW = 0.0058 TL^3.20")+
-  annotate(geom="text", x=10, y=470, label="b1 = 3.20, t(166) = 96.76, p > 0.05")+
-  annotate(geom="text", x=10, y=440, label="r^2 = 0.98, F(1,166) = 9363, p < 0.05")
-
-```
-
-
-### Option 2 Tuna (FIDEMAR)
-
-This is a big one; the database has a total of 51,799 records (organisms) of tuna catched between 2013 and 2014.
-
-#### Where do the larger catches occur?
-
-We divide type of casts into three categories: tuna associated with dolphins, free swimming tuna, and tuna associated with Fishing Aggregation Devices (FADs).Do different types of casts yield different catches? Is there a spatial pattern for this?
-
-```{r, echo=FALSE, fig.cap="Tuna catches made by the Mexican Tuna Purse Seine Fleet in 2013 and 2014 by type of cast"}
-
-tuna=read_delim("Data/tuna_JCVD.csv", ";")
-
-lon=mean(unique(tuna$Longitude))
-lat=mean(unique(tuna$Latitude))
-
-newmap=get_map(location=c(longitude=lon, latitude=lat), zoom=4, maptype="terrain")
-
-ggmap(newmap)+
-  geom_point(data=tuna, aes(x=Longitude, y=Latitude, col=Catch_t))+
-  labs(x="Longitude", y="Latitude")+
-  facet_grid(Year~Type)
-```
-
-
-#### Are there differences in sizes based on type of cast?
-
-Are there differences in sizes based on these types of casts?
-
-```{r, echo=TRUE}
-summary = tuna %>%
-  select(Cruise, Year, Type, Cast, Latitude, Longitude, Catch_t, Length_cm) %>%
-  group_by(Type, Year) %>%
-  summarize(mean_length_cm=mean(Length_cm), SD=sd(Length_cm))
-```
-
-
-```{r, echo=FALSE, fig.cap="Mean total length (cm) of tuna based on type of cast. Bars indicate 1 SD. LANMAM = casts with tuna and dolphins, LANATUN = casts on free swimming tuna, LANPALO = casts ontuna with FADS."}
-
-Year=summary$Year
-Year[Year==2013]="2013"
-Year[Year==2014]="2014"
-summary[,2]=Year
-
-ggplot(summary, aes(x=Type, y=mean_length_cm, fill=Year))+
-  geom_bar(position=position_dodge(0.9), stat="identity")+
-  geom_errorbar(position=position_dodge(0.9), width=0.25, aes(ymin=mean_length_cm-SD, ymax=mean_length_cm+SD))+
+ggplot(data=elasmo, aes(Category))+
+  geom_bar(aes(fill=Category))+
   scale_fill_brewer(palette="Set1")+
-  theme_bw()+
-  theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank())+
-  theme(panel.grid.minor.y=element_blank(), panel.grid.major.y=element_blank())+
-  labs(x="Type of Cast", y="Total length (cm)")
+  theme_bw()
 ```
 
+```{r, echo=FALSE, fig.cap="Changes in category though years"}
 
-### Option 3 Fish (IUCN)
+elasmo2=elasmo %>%
+  group_by(`Modified Year`, Category) %>%
+  summarize(Count=n())
 
+ggplot(data=elasmo2, aes(`Modified Year`, Count))+
+  geom_line(aes(col=Category))+
+  scale_color_brewer(palette="Set1")+
+  theme_bw()
+```
 
 ### Option 4 Hunter-data
 
 Exploratory analysis of this dataset. 
-```{r,results = 'asis'}
+```{r,results = 'asis', echo=FALSE}
 fish <- read_csv("Data/hunter-data.csv")
 kable(fish)
 ```
