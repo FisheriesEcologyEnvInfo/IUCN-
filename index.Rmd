@@ -132,6 +132,46 @@ ggplot(change, aes(Species, Change)) +
   labs(x='Species',y='% Change')
 ```
 
+```{r,echo=FALSE,fig.width=4, fig.height=6}
+setwd("./Data")
+Taxonomic=read.csv("Fish Red List Taxonomic and Status.csv")
+#Note that some of the scientific names are a little bit funky in these files. They seem to have not too much information on them and as such have weird characters that may confuse any code used for joining and such.
+
+#convert low count categories to closest related cateogry (consolidating categories-- we can also just remove them). #note that grep below finds the index of LR/cd OR LR/lc.
+Taxonomic$Category[grep("LR/cd|LR/lc",Taxonomic$Category)]="LC" 
+Taxonomic$Category[grep("LR/nt",Taxonomic$Category)]="NT"
+Taxonomic$Category[grep("EW",Taxonomic$Category)]="EX"
+Taxonomic$Category=factor(Taxonomic$Category,levels=c("EX","CR","EN","VU","NT","LC","DD")) 
+
+library(RColorBrewer)
+library(ggplot2)
+
+SummaryTable=data.frame(table(Taxonomic$Category,Taxonomic$Class))
+names(SummaryTable)=c("GlobalStatus","Class","Count")
+
+colours=brewer.pal(name="OrRd", n=nlevels(SummaryTable$GlobalStatus))
+names(colours)=rev(levels(SummaryTable$GlobalStatus))
+
+CategoryGraph=list()
+for(i in 1:nlevels(SummaryTable$Class)){
+  temp=SummaryTable[SummaryTable$Class==levels(SummaryTable$Class)[i],]
+  CategoryGraph[[i]]=ggplot(data=temp,aes(x=Class,y=Count,fill=GlobalStatus,order=GlobalStatus,width=.3))+
+    geom_bar(,stat="identity")+
+    guides(fill=guide_legend(reverse=TRUE))+
+    scale_fill_manual(values=colours)+
+    ylab("Number of Species")+
+    ggtitle("IUCN Threat Categories")+
+    theme_bw()+
+    scale_x_discrete(labels=c("ACTINOPTERYGII"="Actinopterygii","CEPHALASPIDOMORPHI"="Cephalaspidomorphi","CHONDRICHTHYES"="Chondrichthyes","MYXINI"="Myxini","SARCOPTERYGII"="Sarcopterygii"))+
+    geom_bar(stat="identity",color="black",show.legend=FALSE)+
+    xlab(NULL)+
+    theme(legend.background = element_rect(colour = "black"),plot.title = element_text(size = 17, vjust = 2),axis.text=element_text(size=17),axis.title=element_text(size=15,vjust = 1),legend.title=element_blank(),legend.text=element_text(size=13))
+}
+CategoryGraph
+
+#I spent a little bit of time getting these put together. Having them on the same graph doesn't work since Actinopterygii is so much larger than the other fish classes. I was looking into getting them laid out horizontally (something like facet_grid) with unique axes for each but only a single title and one legend. It looks like working with Actinopterygii and Chondrichthyes is our best option if we want to do more than Chondrichthyes. The next step that might be good is to use 'taxize' to obtain encyclopedia of life (EOL) information on the weight of the species in chondrichthyes.
+
+```
 
 
 
