@@ -1,6 +1,6 @@
 ---
 title: "Fish-Ecol Org"
-author: "Faúndez, P., Hartline, N., Mayorga-Henao, J., Villaseñor-Derbez, J.C."
+author: "Faúndez-Baez, P., Hartline, N., Mayorga-Henao, J., Villaseñor-Derbez, J.C."
 output:
   html_document:
     fig_caption: yes
@@ -11,29 +11,34 @@ output:
 
 ##Types of data
 
-
 We have the following data:
 
 - IUCN: Data on endangerment of fish species (Chondricthyes). The data will include trend, global status, country, habitat (freshwater or marine), and other species details. Some of these data sets will need to be joined.
 - Hunt-data
     - This data set contains estimates of population abundance for 5 species of reef fish and their associated recruitment habitat. The data was collected in 2002 and 2014 at two lagoons in French Polynesia that have contrasting anthropogenic pressures. 
  
- 
 ## Data and metadata standards
  
-
- 
+Data comes from the International Union for Conservation of Nature: IUCN Red List of Threatened Species
+http://www.iucnredlist.org
+The IUCN Red List of Threatened Species is widely recognized as the most comprehensive, objective global approach for evaluating the conservation status of plant and animal species. From its small beginning, the IUCN Red List has grown in size and complexity and now plays an increasingly prominent role in guiding conservation activities of governments, NGOs and scientific institutions. The introduction in 1994 of a scientifically rigorous approach to determine risks of extinction that is applicable to all species, has become a world standard. In order to produce the IUCN Red List of Threatened Species, the IUCN Species Programme working with the IUCN Survival Commission (SSC) and with members of IUCN draws on and mobilizes a network of scientists and partner organizations working in almost every country in the world, who collectively hold what is likely the most complete scientific knowledge base on the biology and conservation status of species.
  
 ## Policies for access and sharing
- 
- 
- 
-## Policies and provisions for re-use, re-distribution
- 
+
+All data, program code and results are freely available via the service GitHub https://github.com/fish-ecol
+
+Data should be cited as: 
+
+Faúndez-Baez, P., Hartline, N., Mayorga-Henao, J., Villaseñor-Derbez, J.C. "titlle"
+
+and
+
+IUCN 2015. The IUCN Red List of Threatened Species. Version 2015-4. <http://www.iucnredlist.org>. Downloaded on 05 February 2016.
 
 
 ## Plans for archiving and preservation of access
 
+Are we thinking into submit our data to a national data center, publication in a widely available scientific journal, book or website? If not, we should take off this point.
 
 
 ## Data question(s)
