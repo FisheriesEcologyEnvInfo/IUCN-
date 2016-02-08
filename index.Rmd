@@ -38,8 +38,7 @@ IUCN 2015. The IUCN Red List of Threatened Species. Version 2015-4. <http://www.
 
 ## Plans for archiving and preservation of access
 
-Are we thinking into submit our data to a national data center, publication in a widely available scientific journal, book or website? If not, we should take off this point.
-
+We will submit our story and data to a http://datamares.ucsd.edu/eng/ 
 
 ## Data question(s)
 
