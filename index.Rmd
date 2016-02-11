@@ -14,8 +14,6 @@ output:
 We have the following data:
 
 - IUCN: Data on endangerment of fish species (Chondricthyes). The data will include trend, global status, country, habitat (freshwater or marine), and other species details. Some of these data sets will need to be joined.
-- Hunt-data
-    - This data set contains estimates of population abundance for 5 species of reef fish and their associated recruitment habitat. The data was collected in 2002 and 2014 at two lagoons in French Polynesia that have contrasting anthropogenic pressures. 
  
 ## Data and metadata standards
  
@@ -106,35 +104,7 @@ ggplot(data=elasmo2, aes(`Modified Year`, Count))+
   theme_bw()
 ```
 
-### Option 4 Hunter-data
 
-Exploratory analysis of this dataset. 
-```{r,results = 'asis', echo=FALSE}
-fish <- read_csv("Data/hunter-data.csv")
-kable(fish)
-```
-
-#### What is the change in abundances of adults at each site?
-
-```{r}
-change<- fish %>% 
-  select(Species, Adults, Island, year) %>%  
-  group_by(Species, Island) %>% 
-  spread(year, Adults) %>% 
-  mutate(Change =100*(`2014`-`2002`)/`2002`) 
-kable(change)
-```
-
-```{r, echo=FALSE, fig.cap="Relative change in mean density of adults (individuals per 100m2 of reef)"}
-ggplot(change, aes(Species, Change)) +
-  geom_bar(stat = "identity", aes(fill = Island),position=position_dodge(), width=.5)+
-  scale_fill_brewer(palette="Set1")+
-  theme_bw()+
-  geom_hline(yintercept = 0)+
-  theme(panel.grid.minor.x=element_blank(), panel.grid.major.x=element_blank())+
-  theme(panel.grid.minor.y=element_blank(), panel.grid.major.y=element_blank())+
-  labs(x='Species',y='% Change')
-```
 
 ```{r,echo=FALSE,fig.width=4, fig.height=6}
 setwd("./Data")
