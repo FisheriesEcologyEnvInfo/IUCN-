@@ -104,6 +104,21 @@ ggplot(data=elasmo2, aes(`Modified Year`, Count))+
   theme_bw()
 ```
 
+```{r,echo=FALSE}
+TextData=read.csv("./Data/Fish Text Info.csv")
+
+rmvblank=TextData[TextData$Systems!=""&TextData$Systems!="Terrestrial; Freshwater",]
+
+SystemsTable=table(rmvblank$Class,factor(rmvblank$Systems))
+
+print("Fish Class compared to habitat systems")
+print(SystemsTable)
+
+CHItest=suppressWarnings(chisq.test(SystemsTable))
+
+if(CHItest$p.value<.05){print("There was a significant association between fish class and habitat system")}else{print("There was no significant association between fish class and habitat system")}
+
+```
 
 
 ```{r,echo=FALSE,fig.width=4, fig.height=6}
