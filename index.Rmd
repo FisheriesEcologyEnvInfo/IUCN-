@@ -130,7 +130,7 @@ CategoryGraph=list()
 for(i in 1:nlevels(SummaryTable$Class)){
   temp=SummaryTable[SummaryTable$Class==levels(SummaryTable$Class)[i],]
   CategoryGraph[[i]]=ggplot(data=temp,aes(x=Class,y=Count,fill=GlobalStatus,order=GlobalStatus,width=.3))+
-    geom_bar(,stat="identity")+
+    geom_bar(stat="identity")+
     guides(fill=guide_legend(reverse=TRUE))+
     scale_fill_manual(values=colours)+
     ylab("Number of Species")+
