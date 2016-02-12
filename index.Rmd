@@ -36,7 +36,7 @@ IUCN 2015. The IUCN Red List of Threatened Species. Version 2015-4. <http://www.
 
 ## Plans for archiving and preservation of access
 
-We will submit our story and data to a http://datamares.ucsd.edu/eng/ 
+We will submit our story and data to a [dataMares](http://datamares.ucsd.edu/eng/).
 
 ## Data question(s)
 
@@ -73,6 +73,7 @@ Classes | Orders | Families  | Species
 --------|--------|-----------|--------
 `r C`   | `r O`  |  `r Fa`   | `r SN`
 
+How many species are listed as eac category by Order?
 
 ```{r, echo=FALSE, fig.cap="Categories for ech Order"}
 
@@ -84,6 +85,7 @@ ggplot(data=elasmo, aes(Order))+
 
 ```
 
+How many species are listed within each category?
 ```{r, echo=FALSE, fig.cap="Number of cases by Category"}
 
 ggplot(data=elasmo, aes(Category))+
@@ -92,6 +94,7 @@ ggplot(data=elasmo, aes(Category))+
   theme_bw()
 ```
 
+How has number of species changed for each category throughout the years?
 ```{r, echo=FALSE, fig.cap="Changes in category though years"}
 
 elasmo2=elasmo %>%
@@ -116,7 +119,7 @@ print(SystemsTable)
 
 CHItest=suppressWarnings(chisq.test(SystemsTable))
 
-if(CHItest$p.value<.05){print("There was a significant association between fish class and habitat system")}else{print("There was no significant association between fish class and habitat system")}
+if(CHItest$p.value<.05){print("There is a significant association between fish class and habitat system")}else{print("There is no significant association between fish class and habitat system")}
 
 ```
 
