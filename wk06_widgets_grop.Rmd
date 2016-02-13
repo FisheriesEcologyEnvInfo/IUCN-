@@ -1,0 +1,14 @@
+---
+title: "wk06_widgets_grop"
+author: "fish-ecol team"
+date: "13 de febrero de 2016"
+output: html_document
+---
+
+# Taxonomic composition of our data
+
+```{r}
+
+
+```
+
