@@ -164,18 +164,3 @@ CategoryGraph
 
 ```
 
-```{r Country Data,echo=FALSE}
-CountryInfo=read.csv("./Data/Fish Country Info.csv")
-
-#Will finish this later!!
-
-#remove non-marine species of fish!
-
-#Species Names (Genus species),Family,Order,Class, Country, ISO3, Global Status, Country Indicator (native, introduced, etc), Trend, Year Assessed.
-
-#We can also use taxize to find Global Status updates through the years
-#e.g. 
-library(taxize) #install.packages('taxize)
-iucn_summary("Acinonyx jubatus")
-
-```
