@@ -1,0 +1,91 @@
+---
+title: "wk06_widgets_grop"
+author: "fish-ecol team"
+date: "13 de febrero de 2016"
+output:
+  html_document:
+    fig_caption: yes
+    toc: yes
+---
+
+```{r, "wordcloud", echo=FALSE}
+
+library("d3wordcloud")# devtools::install_github("jbkunst/d3wordcloud")
+
+words <- c("IUCN", "Redlist", "fish-ecol", "Endangered", "Species")
+
+freqs <- sample(seq(length(words)))
+
+d3wordcloud(words, freqs)
+```
+
+# Taxonomic composition of our data
+
+```{r, "TaxTree", echo=FALSE}
+# You wil have to install some packages:
+suppressPackageStartupMessages({
+  library(readr)
+  library(dplyr)
+  library(tidyr)
+  library(treemap)
+  library(data.tree)
+  library(DT)
+  library(ape)
+  library(networkD3)
+})
+
+# #Uncomment if you need to reload a *.csv to convert to tree(Node)
+
+# #We read the Taxonomic data from csv file, and select columns of interest
+# taxdata=read_csv("./data/Taxonomic_and_Status.csv") %>%
+#   select(Class, Order, Family, Genus, `Scientific Name`)
+  
+# #The first attempt created a horrible phylo tree. I decided to create another with only CR species. Both files are stored as *.RData, just in case.
+# taxdata=read_csv("./data/Taxonomic_and_Status.csv") %>%
+#   filter(Category=="CR") %>%
+#   select(Class, Order, Family, Genus, `Scientific Name`)
+# 
+# # We need no create a "pathString". This is a single string that contains all taxonomic information for each species. Therefore, pathString is a column like "SARCOPTERYGII/COELACANTHIFORMES/LATIMERIIDAE/Latimeria/Latimeria chalumnae". This string is used later in as.Node as to indicate the function how to build the tree.
+# 
+# taxdata$pathString=paste(taxdata$Class,
+#                          taxdata$Order,
+#                          taxdata$Family,
+#                          taxdata$Genus,
+#                          taxdata$`Scientific Name`,
+#                          sep="/")
+# 
+# #We can now build the tree, by indicating the data, type of data, delimiter, and path
+# taxtree=as.Node(taxdata, mode="table", pathDelimiter="/", pathName="pathString")
+# 
+# taxlist=ToListExplicit(taxtree, unname = TRUE) #We can convert this to a list, and feed it to a Network graph
+# 
+# # We must save the files taxtree(Node) and taxtlist(List), because creating the tree takes A LOT. We can later just load them with load("filename.extension")
+# save(taxtree, file="Data/taxtreeCR.RData")
+# save(taxlist, file="Data/taxListCR.RData")
+```
+
+## Table
+
+Our taxonomical tree looks like this. This is only for the first two species, in a total of... a lot.
+
+```{r, "load", echo=FALSE}
+#load("taxList.RData") #Uncomment to use all species (loads data)
+#load("taxttree.RData") #Uncomment to use all species (loads data)
+
+load("Data/taxListCR.RData")
+load("Data/taxtreeCR.RData")
+
+print(taxtree, limit=10)
+
+```
+
+
+## Tree
+
+Taxonomic tree of species under IUCN's **CR** category. *Hover* over a node to see the text grow.
+```{r, "phylotree", echo=FALSE, fig.width=9, fig.height=9}
+#radialNetwork(taxlist) #Uncomment to use all species (plots)
+radialNetwork(taxlist)
+```
+
+

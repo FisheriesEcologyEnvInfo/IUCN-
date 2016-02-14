@@ -125,7 +125,7 @@ if(CHItest$p.value<.05){print("There is a significant association between fish c
 
 
 ```{r IUCN Taxonomic Graphs,echo=FALSE,fig.width=4, fig.height=6}
-Taxonomic=read.csv("./Data/Fish Red List Taxonomic and Status.csv")
+Taxonomic=read.csv("./Data/Taxonomic_and_Status.csv")
 #Note that some of the scientific names are a little bit funky in these files. They seem to have not too much information on them and as such have weird characters that may confuse any code used for joining and such.
 
 #convert low count categories to closest related cateogry (consolidating categories-- we can also just remove them). #note that grep below finds the index of LR/cd OR LR/lc.
