@@ -43,13 +43,13 @@ We will submit our story and data to a [dataMares](http://datamares.ucsd.edu/eng
 
 ```{r, echo=FALSE, warning=FALSE}
 
-suppressWarnings(suppressMessages(library(readr)))
-suppressWarnings(suppressMessages(library(dplyr)))
-suppressWarnings(suppressMessages(library(tidyr)))
-suppressWarnings(suppressMessages(library(ggplot2)))
-suppressWarnings(suppressMessages(library(knitr)))
-suppressWarnings(suppressMessages(library(rworldmap)))
-suppressWarnings(suppressMessages(library(ggmap)))
+suppressPackageStartupMessages({
+  library(readr)
+  library(dplyr)
+  library(tidyr)
+  library(ggplot2)
+  library(knitr)
+})
 
 ```
 
@@ -161,6 +161,70 @@ for(i in 1:nlevels(SummaryTable$Class)){
 CategoryGraph
 
 #I spent a little bit of time getting these put together. Having them on the same graph doesn't work since Actinopterygii is so much larger than the other fish classes. I was looking into getting them laid out horizontally (something like facet_grid) with unique axes for each but only a single title and one legend. It looks like working with Actinopterygii and Chondrichthyes is our best option if we want to do more than Chondrichthyes. The next step that might be good is to use 'taxize' to obtain encyclopedia of life (EOL) information on the weight of the species in chondrichthyes.
+
+```
+
+# The Geo chart is displayed in a window's browser when you run this chunk
+
+```{r Maping IUCN Category Index per Country}
+#run this chunk to get the Geo chart
+
+fishData <- read_csv(file="Data/Long Format Collected Fish Information IUCN")     #read cvs always with _ (as: read_csv) it keep the data without factors
+
+#fishData$index <- NA
+unique(fishData$Category) #Shows all the categories only one time
+# "LC"    "VU"    "NT"    "CR"    "EN"    "DD"    "LR/nt"
+
+#Critically endangered (CR) – Extremely high risk of extinction in the wild.
+#Endangered (EN) – High risk of extinction in the wild.
+#Vulnerable (VU) – High risk of endangerment in the wild.
+#Near threatened (NT) – Likely to become endangered in the near future.
+#LR/nt = Lower Risk/near threatened (I didn't find a definition for this category)
+#Least concern (LC) – Lowest risk. Does not qualify for a more at-risk category. Widespread and abundant taxa are included in this category.
+#Data deficient (DD) – Not enough data to make an assessment of its risk of extinction.
+
+#fishData$Category <- as.character(fishData$Category) #Tranform from Factor to Characters
+
+#proposal number for each category, PLEASE REVIEW!
+cat2val = read_csv(
+'Category,index
+DD,1
+LC,2
+LR/nt,3
+NT,4
+VU,5
+EN,6
+CR,7')
+
+#This is the file with the ISO3 and Country name
+conversion <- read_csv(file="Data/CountryConversion.csv")
+
+
+fishDataCountries = fishData %>%           #generating the fishDataCountries output
+  left_join(                               #joining fishData with cat2val
+    cat2val, 
+    by = c("Category")) %>%         
+  rename(ISO3=CountryISO3) %>%             #rename common column with ISO3
+  left_join(                               #joining fishData with conversion by ISO3
+    conversion, 
+    by = c("ISO3")) 
+
+
+fishData2 = fishDataCountries %>%                     
+  group_by(ISO2) %>%                        #grouping by ISO2 column
+  summarize(                                #calculating the mean and rounded to 1 digit
+    mean = round(mean(index),digits=1))
+
+# Plot countries, I am using the mean as an example of the index that we want to show in this map (we have to create the index) 
+
+fishData2$levels <- levels(fishData2$mean)  #Creating display leyend levels for each country in the map
+
+suppressWarnings(suppressMessages(library(googleVis))) #install.packages("googleVis")
+#### Create a geo chart
+G1 <- gvisGeoChart(fishData2, "ISO2", "mean", hovervar="ISO2",
+                options=list(gvis.editor="S&P",
+                             colorAxis="{colors:['#91BFDB', '#FC8D59']}"))
+plot(G1)
 
 ```
 
