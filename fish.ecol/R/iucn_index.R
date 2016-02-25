@@ -1,16 +1,21 @@
 #' iucn_index
 #'
-#' Calculates a weighted average for IUCN's categories
-#' @param data (vector of categories by country)
+#' Calculates a weighted average for IUCN's categories. It can calculate it as an absolute indes, or a relative index (0 to 1).
+#'
+#' @param data (vector of categories by country. Acceptable formats for categories are: "DD", "LC", "LR/nt", "NT", "VU", "EN", "CR")
+#'
+#' @param scores (vector of scores to weight each category. Default is c(1,2,3,4,5,6,7))
+#'
+#' @param type (type of index to use. String "a" uses a weighted average. String "b" uses a relative score (1 = highest possible value, when all species ar CR))
 #'
 #' @return iucn_index (The IUCN index)
 #'
-#' @author Juan, Patricia, JC
+#' @author Juan, Patricia, Juan Carlos, Fish-ecol
 #'
 #'
 #'
 
-iucn_index=function(data){
+iucn_index=function(data, scores=c(1,2,3,4,5,6,7), type="a"){
 
   # agregar un if que defina que tipo de dato es
 
@@ -26,15 +31,29 @@ iucn_index=function(data){
 
   S$count[is.na(S$count)]=0
 
+ifelse (type=="a",
+        {
+          index=(scores[1]*S$count[S$category=="DD"]+
+                   scores[2]*S$count[S$category=="LC"]+
+                   scores[3]*S$count[S$category=="LR/nt"]+
+                   scores[4]*S$count[S$category=="NT"]+
+                   scores[5]*S$count[S$category=="VU"]+
+                   scores[6]*S$count[S$category=="EN"]+
+                   scores[7]*S$count[S$category=="CR"]
+          )/sum(S$count)
+          },
+        {
+          index=(scores[1]*S$count[S$category=="DD"]+
+                   scores[2]*S$count[S$category=="LC"]+
+                   scores[3]*S$count[S$category=="LR/nt"]+
+                   scores[4]*S$count[S$category=="NT"]+
+                   scores[5]*S$count[S$category=="VU"]+
+                   scores[6]*S$count[S$category=="EN"]+
+                   scores[7]*S$count[S$category=="CR"]
+          )/(sum(S$count)*scores[7])
+          }
+        )
 
-  index=(1*S$count[S$category=="DD"]+
-         2*S$count[S$category=="LC"]+
-         3*S$count[S$category=="LR/nt"]+
-         4*S$count[S$category=="NT"]+
-         5*S$count[S$category=="VU"]+
-         6*S$count[S$category=="EN"]+
-         7*S$count[S$category=="CR"]
-  )/sum(S$count)
 
 return(index)
 

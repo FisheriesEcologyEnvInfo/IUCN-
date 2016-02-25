@@ -4,18 +4,22 @@
 \alias{iucn_index}
 \title{iucn_index}
 \usage{
-iucn_index(data)
+iucn_index(data, scores = c(1, 2, 3, 4, 5, 6, 7), type = "a")
 }
 \arguments{
-\item{data}{(vector of categories by country)}
+\item{data}{(vector of categories by country. Acceptable formats for categories are: "DD", "LC", "LR/nt", "NT", "VU", "EN", "CR")}
+
+\item{scores}{(vector of scores to weight each category. Default is c(1,2,3,4,5,6,7))}
+
+\item{type}{(type of index to use. String "a" uses a weighted average. String "b" uses a relative score (1 = highest possible value, when all species ar CR))}
 }
 \value{
 iucn_index (The IUCN index)
 }
 \description{
-Calculates a weighted average for IUCN's categories
+Calculates a weighted average for IUCN's categories. It can calculate it as an absolute indes, or a relative index (0 to 1).
 }
 \author{
-Juan, Patricia, JC
+Juan, Patricia, Juan Carlos, Fish-ecol
 }
 
