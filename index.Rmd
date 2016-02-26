@@ -6,7 +6,7 @@ output:
     fig_caption: yes
     theme: cerulean
     toc: yes
-    toc_depth: 2
+    toc_depth: 4
 ---
 
 ##Types of data
@@ -166,7 +166,10 @@ CategoryGraph
 
 ```
 
-```{r Chi-Squared function,echo=FALSE}
+# Week 7
+
+## Chi^2 tester
+```{r Chi-Squared function}
 
 source("chitester.R")
 
@@ -174,5 +177,55 @@ chitester("Modified.Year","Category")
 chitester("Class","Category")
 chitester("Class","Species_Presence")
 
+```
+
+## IUCN index
+
+We are currently using this for our [interative map](http://fish-ecol.github.io/wk06_widgets_group.html).
+
+```{r, iucn_index, eval=FALSE}
+iucn_index=function(data, scores=c(1,2,3,4,5,6,7), type="a"){
+
+  # agregar un if que defina que tipo de dato es
+
+  data=as.factor(data)
+
+  S=summary(data)
+  SS=data.frame(category=names(S),count=S)
+
+  all=data.frame(c("DD", "LC", "LR/nt", "NT", "VU", "EN", "CR"))
+  colnames(all)=c("category")
+
+  S=left_join(all, SS, by="category")
+
+  S$count[is.na(S$count)]=0
+
+ifelse (type=="a",
+        {
+          index=(scores[1]*S$count[S$category=="DD"]+
+                   scores[2]*S$count[S$category=="LC"]+
+                   scores[3]*S$count[S$category=="LR/nt"]+
+                   scores[4]*S$count[S$category=="NT"]+
+                   scores[5]*S$count[S$category=="VU"]+
+                   scores[6]*S$count[S$category=="EN"]+
+                   scores[7]*S$count[S$category=="CR"]
+          )/sum(S$count)
+          },
+        {
+          index=(scores[1]*S$count[S$category=="DD"]+
+                   scores[2]*S$count[S$category=="LC"]+
+                   scores[3]*S$count[S$category=="LR/nt"]+
+                   scores[4]*S$count[S$category=="NT"]+
+                   scores[5]*S$count[S$category=="VU"]+
+                   scores[6]*S$count[S$category=="EN"]+
+                   scores[7]*S$count[S$category=="CR"]
+          )/(sum(S$count)*scores[7])
+          }
+        )
+
+
+return(index)
+
+}
 ```
 

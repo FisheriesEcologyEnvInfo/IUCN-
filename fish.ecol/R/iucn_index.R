@@ -10,7 +10,7 @@
 #'
 #' @return iucn_index (The IUCN index)
 #'
-#' @author Juan, Patricia, Juan Carlos, Fish-ecol
+#' @author Juan, Patricia, Juan Carlos, Fish-ecol.github.io
 #'
 #'
 #'

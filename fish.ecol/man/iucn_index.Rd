@@ -20,6 +20,6 @@ iucn_index (The IUCN index)
 Calculates a weighted average for IUCN's categories. It can calculate it as an absolute indes, or a relative index (0 to 1).
 }
 \author{
-Juan, Patricia, Juan Carlos, Fish-ecol
+Juan, Patricia, Juan Carlos, Fish-ecol.github.io
 }
 
