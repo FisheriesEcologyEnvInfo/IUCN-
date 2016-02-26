@@ -166,3 +166,13 @@ CategoryGraph
 
 ```
 
+```{r Chi-Squared function,echo=FALSE}
+
+source("chitester.R")
+
+chitester("Modified.Year","Category")
+chitester("Class","Category")
+chitester("Class","Species_Presence")
+
+```
+
