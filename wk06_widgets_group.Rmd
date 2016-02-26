@@ -126,7 +126,7 @@ cat2val = read_csv(
 DD,1
 LC,2
 LR/nt,3
-NT,4┴
+NT,4
 VU,5
 EN,6
 CR,7')
