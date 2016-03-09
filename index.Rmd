@@ -229,3 +229,18 @@ return(index)
 }
 ```
 
+
+```{r Extantify Examples}
+
+source("./fish.ecol/R/Extantify.R")
+head(Extantify())
+#Calculates global extant marine fish species (shows the top 5 rows)
+
+
+library(devtools)
+load_all('./fish.ecol')
+?Extantify
+#Documentation for Extantify()
+
+```
+
