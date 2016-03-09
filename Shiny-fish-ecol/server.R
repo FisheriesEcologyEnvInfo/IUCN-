@@ -19,7 +19,7 @@ shinyServer(function(input, output) {
     taxlist=ToListExplicit(taxtree, unname = TRUE) 
 
    
-    radialNetwork(taxlist, fontSize=10, nodeColour="blue", textColour="black", opacity=1, linkColour="black")
+    radialNetwork(taxlist, fontSize=10, nodeColour="red", textColour="blue", opacity=1, linkColour="black")
   })
   
 })
