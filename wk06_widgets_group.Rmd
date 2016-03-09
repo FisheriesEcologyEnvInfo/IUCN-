@@ -53,7 +53,10 @@ suppressPackageStartupMessages({
 taxdata=read_csv("./data/Taxonomic_and_Status.csv") %>%
   filter(Category==c("CR", "EN"),Class=="CHONDRICHTHYES") %>%
   select(Class, Order, Family, Genus, `Scientific Name`, Category)
-#
+
+#taxdata.csv created to be used by the Shiny-fish-ecol 
+write.csv(taxdata, file = "Shiny-fish-ecol/data/taxdata.csv")
+
 # # We need no create a "pathString". This is a single string that contains all taxonomic information for each species. Therefore, pathString is a column like "SARCOPTERYGII/COELACANTHIFORMES/LATIMERIIDAE/Latimeria/Latimeria chalumnae". This string is used later in as.Node as to indicate the function how to build the tree.
 #
 taxdata$pathString=paste(taxdata$Class,
