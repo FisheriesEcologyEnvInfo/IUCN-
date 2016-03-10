@@ -1,0 +1,86 @@
+---
+title: "A Spatial Analysis of the IUCN Status of Global Marine Fish"
+author: "Faúndez-Baez, P., Hartline, N., Mayorga-Henao, J., Villaseñor-Derbez, J.C."
+date: "March 10, 2016"
+output: 
+  ioslides_presentation:
+    fig_width: 1
+    fig_height: 1
+    fig_caption: true
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+
+## Research Question
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Methodology
+
+```{r cars, echo = TRUE}
+summary(cars)
+```
+
+## Results and Visualizations
+
+```{r IUCN Taxonomic Graphs,echo=FALSE,fig.width=10, fig.height=6}
+Taxonomic=read.csv("./Data/Taxonomic_and_Status.csv")
+#Note that some of the scientific names are a little bit funky in these files. They seem to have not too much information on them and as such have weird characters that may confuse any code used for joining and such.
+
+#convert low count categories to closest related cateogry (consolidating categories-- we can also just remove them). #note that grep below finds the index of LR/cd OR LR/lc.
+Taxonomic$Category[grep("LR/cd|LR/lc",Taxonomic$Category)]="LC" 
+Taxonomic$Category[grep("LR/nt",Taxonomic$Category)]="NT"
+Taxonomic$Category[grep("EW",Taxonomic$Category)]="EX"
+Taxonomic$Category=factor(Taxonomic$Category,levels=c("EX","CR","EN","VU","NT","LC","DD")) 
+
+library(RColorBrewer)
+library(ggplot2)
+
+SummaryTable=data.frame(table(Taxonomic$Category,Taxonomic$Class))
+names(SummaryTable)=c("GlobalStatus","Class","Count")
+
+colours=brewer.pal(name="OrRd", n=nlevels(SummaryTable$GlobalStatus))
+names(colours)=rev(levels(SummaryTable$GlobalStatus))
+
+SummaryTable1=SummaryTable[SummaryTable$Class=="ACTINOPTERYGII",]
+SummaryTable2=SummaryTable[SummaryTable$Class=="CHONDRICHTHYES",]
+
+CategoryGraph1=ggplot(data=SummaryTable1,aes(x=Class,y=Count,fill=GlobalStatus,order=GlobalStatus,width=.3))+
+    geom_bar(stat="identity",show.legend=T)+
+    guides(fill=guide_legend(reverse=TRUE))+
+    scale_fill_manual(values=colours)+
+    ylab("Number of Species")+
+    ggtitle(NULL)+
+    theme_bw()+
+    scale_x_discrete(labels=c("ACTINOPTERYGII"="Actinopterygii","CHONDRICHTHYES"="Chondrichthyes"))+
+    geom_bar(stat="identity",color="black",show.legend=FALSE)+
+    xlab(NULL)+
+    theme(legend.background = element_rect(colour = "black"),plot.title = element_text(size = 17, vjust = 2),axis.text=element_text(size=14),axis.title=element_text(size=15,vjust = 1),legend.title=element_blank(),legend.text=element_text(size=13))
+
+CategoryGraph2=ggplot(data=SummaryTable2,aes(x=Class,y=Count,fill=GlobalStatus,order=GlobalStatus,width=.3))+
+    geom_bar(stat="identity")+
+    guides(fill=guide_legend(reverse=TRUE))+
+    scale_fill_manual(values=colours)+
+    ylab("Number of Species")+
+    ggtitle(NULL)+
+    theme_bw()+
+    scale_x_discrete(labels=c("ACTINOPTERYGII"="Actinopterygii","CHONDRICHTHYES"="Chondrichthyes"))+
+    geom_bar(stat="identity",color="black",show.legend=FALSE)+
+    xlab(NULL)+
+    theme(legend.background = element_rect(colour = "black"),plot.title = element_text(size = 17, vjust = 2),axis.text=element_text(size=14),axis.title=element_text(size=15,vjust = 1),legend.title=element_blank(),legend.text=element_text(size=13))
+
+library(gridExtra)
+library(grid)
+grid.arrange(CategoryGraph1,CategoryGraph2,ncol=2,nrow=1,top=textGrob("IUCN Threat Categories",gp=gpar(fontsize=18)))
+
+```
+## Final Remarks
+
