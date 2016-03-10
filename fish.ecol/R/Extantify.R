@@ -1,4 +1,4 @@
-#' extantify
+#' Extantify
 #'
 #' subsetcolumns and extantifies the IUCN long data table based on desired output
 #'
