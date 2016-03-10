@@ -14,12 +14,13 @@ iucn_map=function(dataset){
   library(tidyr)
   library(googleVis)
   library(readr)
+  library(fish.ecol)
 
 # Define UI for application that draws a histogram
 ui <- shinyUI(fluidPage(
    
    # Application title
-   titlePanel("IUCN World Index"),
+   titlePanel("IUCN Index MapApp"),
    
    # Sidebar
    sidebarLayout(
@@ -40,7 +41,7 @@ ui <- shinyUI(fluidPage(
                      selected="iucn index"),
          # Dropdown menu to select a category
          selectInput(inputId="category",
-                     label="Choose a category",
+                     label="Choose a category (only for ´total species´)",
                      choices=c("DD",
                                "LC",
                                "LR/nt",
@@ -89,20 +90,20 @@ server <- shinyServer(function(input, output) {
       
       # Plot countries, I am using the mean as an example of the index that we want to show in this map (we have to create the index) 
       
-      colnames(dataset2)=c("Country", "ISO2", "score", "N")
+      colnames(dataset2)=c("Country", "ISO2", "score", "N") #Fix colnames
       
-      #### Create a geo chart with iucn index
-      if(input$index=="iucn index"){
-      gvisGeoChart(dataset2, "ISO2", "score", hovervar="Country",
-                   options=list(gvis.editor="S&P",
-                                colorAxis="{colors:['#91BFDB', '#FC8D59']}"))
-      }
-      #### Create a geo chart with total number of species
+      #Define type of output
       if(input$index=="total species (by category)"){
-        gvisGeoChart(dataset2, "ISO2", "N", hovervar="Country",
+       show="N"
+      }
+      if (input$index=="iucn index"){
+        show="score"
+      }
+      
+      #### Create a geo chart 
+        gvisGeoChart(dataset2, "ISO2", show, hovervar="Country",
                      options=list(gvis.editor="S&P",
                                   colorAxis="{colors:['#91BFDB', '#FC8D59']}"))
-      }
 
    })
 })
@@ -112,8 +113,7 @@ shinyApp(ui = ui, server = server)
 }
 
 library(devtools)
-
-load_all("../fish.ecol")
+devtools::install_github(repo="fish-ecol/fish.ecol", force=TRUE) #So that the server recognizes our functions
 dataset=Extantify(dir="b")
 iucn_map(dataset)
 
