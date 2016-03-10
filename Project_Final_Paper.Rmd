@@ -1,0 +1,140 @@
+---
+title: "Fish-Ecol Project Final Paper"
+author: "Faúndez-Baez, P., Hartline, N., Mayorga-Henao, J., Villaseñor-Derbez, J.C."
+output:
+  html_document:
+    fig_caption: yes
+    theme: cerulean
+    toc: yes
+    toc_depth: 4
+---
+
+##Introduction
+
+Our project was focused on the exploration and visualization of data from the International Union for Conservation of Nature and Natural Resources (IUCN) Red List (IUCN 2015). Specifically, we examined marine fish species from the Red List with a particular interest in threatened species and their distributions worldwide. A problem that is commonly presented to conservationists is where to focus efforts to have the largest positive impact for biodiversity. The IUCN Red List has been described as a powerful tool for conservationists (Rodrigues et al. 2006). Our project aims to utilize the IUCN dataset in such a way that informs international conservation groups on critical areas for conservation.
+
+The scientific question we explored was how threat levels as characterized by the IUCN Red List varied across countries. Although the IUCN Red List data does not provide a complete picture of fish species globally, it can serve as an initial look that may help inform organizations and governments on the priority of conservation efforts. Further analysis within a country is required to advise the best conservation strategies to be employed.
+
+##Innovative Examples
+
+**Assessing global marine biodiversity status within a coupled socio-ecological perspective**
+
+The first example of a similar, but more in-depth analysis along this scientific question was done in a study by Selig et al. (2013). The authors examined marine species data from the IUCN Red List for 151 coastal countries, generating maps of exclusive economic zones (EEZs) along with scores based on overall biodiversity (Figure 1A), threatened species (Figure 1B), and habitats (Figure 1C). 
+
+<div style="width:700px; height=800px">
+![Figure 1](images/BBest map.png)
+</div>
+
+These maps provide a snapshot of areas that are of particular concern. Areas with high overall biodiversity but low species threat may require careful maintenance of current status quo to avoid conservation issues in the future while areas with high species threat may be conservation priorities for governments and organizations. In particular, it appears that some areas in South America have zones of concern (e.g. Argentina and Ecuador) while most of Africa is of particular concern as well. Southeast Asia also appears to be an area for potential conservation actions. Although these problem zones are already recognized, this map provides a quick and simple visual understanding of areas of concern.
+
+**Collapse of the world’s largest herbivores**
+
+The next innovative example of uses for the IUCN Red List was in a paper by Ripple et al. (2015) on large herbivores and their threats. Similarly to the previous paper, the authors of this paper created a map examining the total biodiversity of large herbivore species (Figure 2A) along with a map of threatened large herbivore species (Figure 2B). 
+
+<div style="width:600px; height=1100px">
+![Figure 2](images/F1.Large.jpg)
+</div>
+
+This provides a useful look at areas of particular concern for conservation action as it breaks this down further than country-level analysis by using the spatial data contained in the IUCN Red List. This data is relatively high quality since large herbivores are well-studied, allowing for accurate analysis in this fashion.
+
+The authors analyzed the IUCN Red List data further by obtaining the listed species threats contained in the IUCN Red List (Figure 3). This further narrows down conservation priorities by highlighting the most relevant threats for the species they studied.
+
+<div style="width:600px; height=400px">
+![Figure 3](images/F4.Large.jpg)
+</div>
+
+**Fish-Ecol Project**
+
+NOTE INSERT OUR VISUALIZATION HERE!-- namely the map
+
+
+
+## Methods
+
+
+Methods Introduce the goals of your analysis. Summarize the methods of your analysis. 
+
+Reference a Github release of your organization’s repository, which should contain all the commented code for your analysis.
+NOTE: JC could you take this one?
+
+We have the following data:
+
+- IUCN: Data on endangerment of fish species (Chondricthyes). The data will include trend, global status, country, habitat (freshwater or marine), and other species details. Some of these data sets will need to be joined.
+
+## Results
+
+```{r IUCN Taxonomic Graphs,echo=FALSE,fig.width=10, fig.height=6}
+Taxonomic=read.csv("./Data/Taxonomic_and_Status.csv")
+#Note that some of the scientific names are a little bit funky in these files. They seem to have not too much information on them and as such have weird characters that may confuse any code used for joining and such.
+
+#convert low count categories to closest related cateogry (consolidating categories-- we can also just remove them). #note that grep below finds the index of LR/cd OR LR/lc.
+Taxonomic$Category[grep("LR/cd|LR/lc",Taxonomic$Category)]="LC" 
+Taxonomic$Category[grep("LR/nt",Taxonomic$Category)]="NT"
+Taxonomic$Category[grep("EW",Taxonomic$Category)]="EX"
+Taxonomic$Category=factor(Taxonomic$Category,levels=c("EX","CR","EN","VU","NT","LC","DD")) 
+
+library(RColorBrewer)
+library(ggplot2)
+
+SummaryTable=data.frame(table(Taxonomic$Category,Taxonomic$Class))
+names(SummaryTable)=c("GlobalStatus","Class","Count")
+
+colours=brewer.pal(name="OrRd", n=nlevels(SummaryTable$GlobalStatus))
+names(colours)=rev(levels(SummaryTable$GlobalStatus))
+
+SummaryTable1=SummaryTable[SummaryTable$Class=="ACTINOPTERYGII",]
+SummaryTable2=SummaryTable[SummaryTable$Class=="CHONDRICHTHYES",]
+
+CategoryGraph1=ggplot(data=SummaryTable1,aes(x=Class,y=Count,fill=GlobalStatus,order=GlobalStatus,width=.3))+
+    geom_bar(stat="identity",show.legend=T)+
+    guides(fill=guide_legend(reverse=TRUE))+
+    scale_fill_manual(values=colours)+
+    ylab("Number of Species")+
+    ggtitle(NULL)+
+    theme_bw()+
+    scale_x_discrete(labels=c("ACTINOPTERYGII"="Actinopterygii","CHONDRICHTHYES"="Chondrichthyes"))+
+    geom_bar(stat="identity",color="black",show.legend=FALSE)+
+    xlab(NULL)+
+    theme(legend.background = element_rect(colour = "black"),plot.title = element_text(size = 17, vjust = 2),axis.text=element_text(size=14),axis.title=element_text(size=15,vjust = 1),legend.title=element_blank(),legend.text=element_text(size=13))
+
+CategoryGraph2=ggplot(data=SummaryTable2,aes(x=Class,y=Count,fill=GlobalStatus,order=GlobalStatus,width=.3))+
+    geom_bar(stat="identity")+
+    guides(fill=guide_legend(reverse=TRUE))+
+    scale_fill_manual(values=colours)+
+    ylab("Number of Species")+
+    ggtitle(NULL)+
+    theme_bw()+
+    scale_x_discrete(labels=c("ACTINOPTERYGII"="Actinopterygii","CHONDRICHTHYES"="Chondrichthyes"))+
+    geom_bar(stat="identity",color="black",show.legend=FALSE)+
+    xlab(NULL)+
+    theme(legend.background = element_rect(colour = "black"),plot.title = element_text(size = 17, vjust = 2),axis.text=element_text(size=14),axis.title=element_text(size=15,vjust = 1),legend.title=element_blank(),legend.text=element_text(size=13))
+
+library(gridExtra)
+library(grid)
+grid.arrange(CategoryGraph1,CategoryGraph2,ncol=2,nrow=1,top=textGrob("IUCN Threat Categories",gp=gpar(fontsize=18)))
+
+
+#I spent a little bit of time getting these put together. Having them on the same graph doesn't work since Actinopterygii is so much larger than the other fish classes. I was looking into getting them laid out horizontally (something like facet_grid) with unique axes for each but only a single title and one legend. It looks like working with Actinopterygii and Chondrichthyes is our best option if we want to do more than Chondrichthyes. The next step that might be good is to use 'taxize' to obtain encyclopedia of life (EOL) information on the weight of the species in chondrichthyes.
+
+```
+
+
+Results Present the tables and figures from your analysis along with text that summarizes these findings. You’re encouraged to use sortable tables and interactive figures.
+
+## Discussion
+
+Discussion Discuss the implications of your findings. Include recommendations for future analysis.
+
+
+## References
+
+References Mention at least 5 references above and provide the proper ctiations here. These can be any combination of scientific literature and/or websites.
+
+IUCN 2015. The IUCN Red List of Threatened Species. Version 2015-4. <http://www.iucnredlist.org>. Downloaded on 19 November 2015.
+
+Ripple, W. J., Newsome, T. M., Wolf, C., Dirzo, R., Everatt, K. T., Galetti, M., ... & Macdonald, D. W. (2015). Collapse of the world’s largest herbivores. Science advances, 1(4), e1400103.
+
+Rodrigues, A. S., Pilgrim, J. D., Lamoreux, J. F., Hoffmann, M., & Brooks, T. M. (2006). The value of the IUCN Red List for conservation. Trends in ecology & evolution, 21(2), 71-76.
+
+Selig, E. R., Longo, C., Halpern, B. S., Best, B. D., Hardy, D., Elfes, C. T., ... & Katona, S. K. (2013). Assessing global marine biodiversity status within a coupled socio-ecological perspective. PloS one, 8(4), e60284.
+
