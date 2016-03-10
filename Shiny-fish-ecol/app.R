@@ -10,7 +10,7 @@ shinyUI(fluidPage(
       
       selectInput(inputId = "var", 
                   label = "CR = Critically endangered or EN = Endangered",
-                  choices = list("CR", "EN"),
+                  choices = list("DD","LC","LR/nt","NT","VU","EN","CR"),
                   selected = "CR")
       
     ),

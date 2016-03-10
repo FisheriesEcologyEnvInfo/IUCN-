@@ -7,7 +7,7 @@ output:
     fig_width: 1
     fig_height: 1
     fig_caption: true
-
+    runtime: shiny
 ---
 
 ```{r setup, include=FALSE}
@@ -15,6 +15,10 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ## Introduction
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
 
 
 ## Research Question
@@ -80,6 +84,24 @@ CategoryGraph2=ggplot(data=SummaryTable2,aes(x=Class,y=Count,fill=GlobalStatus,o
 library(gridExtra)
 library(grid)
 grid.arrange(CategoryGraph1,CategoryGraph2,ncol=2,nrow=1,top=textGrob("IUCN Threat Categories",gp=gpar(fontsize=18)))
+
+```
+
+### TaxApp
+
+
+```{r, TaxApp}
+library(shiny)
+runGitHub("fish-ecol.github.io", "fish-ecol", subdir = "Shiny-fish-ecol/")
+
+```
+
+
+### MapApp
+
+```{r, MapApp}
+
+runGitHub("fish-ecol/fish-ecol.github.io", subdir="iucn_map")
 
 ```
 ## Final Remarks

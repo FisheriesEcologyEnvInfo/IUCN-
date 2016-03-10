@@ -7,7 +7,14 @@ output:
     theme: cerulean
     toc: yes
     toc_depth: 4
+    runtime: shiny
 ---
+
+
+```{r setup, include=FALSE}
+#This chunk sets up the initial options for the document. They can be overwriten in any othe chunk
+knitr::opts_chunk$set(echo = FALSE)
+```
 
 ##Introduction
 
@@ -45,7 +52,20 @@ The authors analyzed the IUCN Red List data further by obtaining the listed spec
 
 **Fish-Ecol Project**
 
-NOTE INSERT OUR VISUALIZATION HERE!-- namely the map
+We created two different Shiny Applications. The first one represents
+
+```{r, TaxApp}
+library(shiny)
+runGitHub("fish-ecol.github.io", "fish-ecol", subdir = "Shiny-fish-ecol/")
+
+```
+
+
+```{r, MapApp}
+
+runGitHub("fish-ecol/fish-ecol.github.io", subdir="iucn_map")
+
+```
 
 
 
