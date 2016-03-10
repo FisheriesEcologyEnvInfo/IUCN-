@@ -113,7 +113,9 @@ shinyApp(ui = ui, server = server)
 }
 
 library(devtools)
-devtools::install_github(repo="fish-ecol/fish.ecol", force=TRUE) #So that the server recognizes our functions
+#install_github(repo="fish-ecol/fish.ecol") #So that the server recognizes our functions
+library(fish.ecol)
+load_all("../fish.ecol")
 dataset=Extantify(dir="b")
 iucn_map(dataset)
 

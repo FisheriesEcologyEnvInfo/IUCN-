@@ -1,0 +1,9 @@
+name: iucn_map
+account: jcvd
+server: shinyapps.io
+appId: 88100
+bundleId: 391852
+url: https://jcvd.shinyapps.io/iucn_map/
+when: 1457581264.84698
+asMultiple: FALSE
+asStatic: FALSE

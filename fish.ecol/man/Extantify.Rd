@@ -2,7 +2,7 @@
 % Please edit documentation in R/Extantify.R
 \name{Extantify}
 \alias{Extantify}
-\title{extantify}
+\title{Extantify}
 \usage{
 Extantify(subsetcolumns = NA, factors = NA, dir = "a")
 }
