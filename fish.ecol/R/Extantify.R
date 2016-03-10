@@ -12,15 +12,25 @@
 #'
 #'
 #'
-Extantify=function(subsetcolumns=NA,factors=NA){
+Extantify=function(subsetcolumns=NA,factors=NA, dir="a"){
   
   if(length(subsetcolumns)!=length(factors)){stop("Error: subsetcolumns input is not the same length as the factors input. These should match in ")}
   
+  if (dir=="a"){
   #Load in original data set- note this will take a couple seconds
-  LongData=read.csv("./Data/Long Format Collected Fish Information IUCN")
+  LongData=read.csv("./data/Long Format Collected Fish Information IUCN")
   
   #Load in land locked data set (ISO3 codes)
-  Landlocked=read.csv("./Data/Landlocked.csv")
+  Landlocked=read.csv("./data/Landlocked.csv")
+  }
+  
+  if (dir=="b"){
+    #Load in original data set- note this will take a couple seconds
+    LongData=read.csv("../fish.ecol/data/Long Format Collected Fish Information IUCN")
+    
+    #Load in land locked data set (ISO3 codes)
+    Landlocked=read.csv("../fish.ecol/data/Landlocked.csv")
+  }
   
   #Exclude landlocked countries
   OceanNationsOnly=LongData[!LongData$CountryISO3%in%Landlocked$Landlocked_Countries,]
