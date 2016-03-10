@@ -114,7 +114,6 @@ library(grid)
 grid.arrange(CategoryGraph1,CategoryGraph2,ncol=2,nrow=1,top=textGrob("IUCN Threat Categories",gp=gpar(fontsize=18)))
 
 
-#I spent a little bit of time getting these put together. Having them on the same graph doesn't work since Actinopterygii is so much larger than the other fish classes. I was looking into getting them laid out horizontally (something like facet_grid) with unique axes for each but only a single title and one legend. It looks like working with Actinopterygii and Chondrichthyes is our best option if we want to do more than Chondrichthyes. The next step that might be good is to use 'taxize' to obtain encyclopedia of life (EOL) information on the weight of the species in chondrichthyes.
 
 ```
 
