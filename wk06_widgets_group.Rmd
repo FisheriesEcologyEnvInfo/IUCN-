@@ -103,11 +103,13 @@ radialNetwork(taxlist, fontSize=20, nodeColour="blue", textColour="black", opaci
 # World map IUCN index
 
 
-```{r, Maping IUCN Category Index per Country, results='asis',tidy=FALSE, echo=FALSE}
+```{r, Maping IUCN Category Index per Country, results='asis',tidy=FALSE, echo=FALSE, warning=F}
 #by: Patricia
 #run this chunk to get the Geo chart
 
-fishData <- read_csv(file="Data/Long Format Collected Fish Information IUCN")     #read cvs always with _ (as: read_csv) it keep the data without factors
+fishData <- Extantify()
+  
+  #read_csv(file="Data/Long Format Collected Fish Information IUCN")     #read cvs always with _ (as: read_csv) it keep the data without factors
 
 #fishData$index <- NA
 # unique(fishData$Category) #Shows all the categories only one time
