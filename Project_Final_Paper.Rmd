@@ -144,16 +144,30 @@ Results Present the tables and figures from your analysis along with text that s
 
 Discussion Discuss the implications of your findings. Include recommendations for future analysis.
 
+The reduction in trophic levels have been showed in 30 of the 48 largest marine ecosystems on the planet (Essington et al. 2006). “Fishing down the marine food webs”: a gradual change in landings from long-lived, upper trophic level species to short-lived, lower trophic species (Pauly et al. 1998) and “fishing through the food web”: the decline in mean trophic levels of fisheries landings is due to increased exploitation of the lower trophic levels of marine food webs (Essington et al. 2006); are two explanations that science is giving for why we shouldn’t extract high number of top predators from a marine environment; basically we are altering the energetic balance within food webs. Between the most targeted groups of top predators by fisheries and the impacts of by-catch it is Chondrichthyes, literature highlight sharks and rays that are considered to be among the most endangered vertebrate groups in the world (Dulvy et al. 2014). Therefore, we focused our work in the Chondrichthyes class, where great concern is driving research efforts to evaluate their condition. We made available two interactive visualizations of Chondrichthyes with IUCN data. Our map visualization provides a useful look at a country-level, showing which countries have most species in the highest IUCN categories of dander (CR = Critically endangered and EN = Endangered). This map can lead scientists, managers and conservation efforts to prioritize countries “areas” on where to focus their actions. Our second interactive visualization is a phylum tree that allows to find on detail which Order, Family, Genus and Species are in CR or EN categories inside of the Chondrichthyes class. The information displayed in the phylum tree can help to easily differentiate between species that are with extremely high risk of extinction (CR) from species that have high risk of extinction (EN). This is also key information for conservation, management or research over specific species or phyla groups. 
+
 
 ## References
 
 References Mention at least 5 references above and provide the proper ctiations here. These can be any combination of scientific literature and/or websites.
 
+Dulvy NK, Fowler SL, Musick JA, Cavanagh RD, Kyne PM, et al. (2014) Extinction risk and conservation of the world’s sharks and rays. Elife 3: e00590. doi: org/10.7554/eLife.00590.002.
+
+Essington TE, Beaudreau AH, Wiedenmann J (2006) Fishing through marine food webs. Proceedings of the National Academy of Science USA 103:3171-3175. doi: 10.1073/pnas.0510964103.
+
 IUCN 2015. The IUCN Red List of Threatened Species. Version 2015-4. <http://www.iucnredlist.org>. Downloaded on 19 November 2015.
+
+Pauly D, Christensen V, Dalsgaard J, Froese R, Torres F (1998) Fishing down marine food webs. Science 279:860-863. doi: 10.1126/science.279.5352.860.
 
 Ripple, W. J., Newsome, T. M., Wolf, C., Dirzo, R., Everatt, K. T., Galetti, M., ... & Macdonald, D. W. (2015). Collapse of the world’s largest herbivores. Science advances, 1(4), e1400103.
 
 Rodrigues, A. S., Pilgrim, J. D., Lamoreux, J. F., Hoffmann, M., & Brooks, T. M. (2006). The value of the IUCN Red List for conservation. Trends in ecology & evolution, 21(2), 71-76.
 
 Selig, E. R., Longo, C., Halpern, B. S., Best, B. D., Hardy, D., Elfes, C. T., ... & Katona, S. K. (2013). Assessing global marine biodiversity status within a coupled socio-ecological perspective. PloS one, 8(4), e60284.
+
+
+
+
+
+
 
