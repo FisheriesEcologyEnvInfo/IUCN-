@@ -152,6 +152,8 @@ The reduction in trophic levels have been showed in 30 of the 48 largest marine 
 
 Between the most targeted groups of top predators by fisheries and the impacts of by-catch it is Chondrichthyes, literature highlight sharks and rays that are considered to be among the most endangered vertebrate groups in the world (Dulvy et al. 2014). Therefore, we focused our work in the Chondrichthyes class, where great concern is driving research efforts to evaluate their condition. We made available two interactive visualizations of Chondrichthyes with IUCN data. Our map visualization provides a useful look at a country-level, showing which countries have most species in the highest IUCN categories of danger (CR = Critically endangered and EN = Endangered). This map can lead scientists, managers and conservation efforts to prioritize countries “areas” on where to focus their actions. Our second interactive visualization is a phylum tree that allows to find on detail which Order, Family, Genus and Species are in CR or EN categories inside of the Chondrichthyes class. The information displayed in the phylum tree can help to easily differentiate between species that are with extremely high risk of extinction (CR) from species that have high risk of extinction (EN). This is also key information for conservation, management or research over specific species or phyla groups. 
 
+For future analysis we recommend to include the use of time series of catch data of Chondrichthyes species at a country level (FAO and Sea Around Us), to make a global map showing the species targeted, also bycatch data should be considered if it is available, because these species are associated with many fisheries worldwide and more than half of the annual catch is through by-catch (Stevens et al. 2000). The catch map could complement our IUCN map of endangered species in a variety of ways, for example, we could search for specific species landed and having linked the information about the fisheries (gear, tons, bycatch, etc) through the country level we could produce priority areas for improvement of fisheries management. 
+
 
 ## References
 
@@ -170,6 +172,8 @@ Ripple, W. J., Newsome, T. M., Wolf, C., Dirzo, R., Everatt, K. T., Galetti, M.,
 Rodrigues, A. S., Pilgrim, J. D., Lamoreux, J. F., Hoffmann, M., & Brooks, T. M. (2006). The value of the IUCN Red List for conservation. Trends in ecology & evolution, 21(2), 71-76.
 
 Selig, E. R., Longo, C., Halpern, B. S., Best, B. D., Hardy, D., Elfes, C. T., ... & Katona, S. K. (2013). Assessing global marine biodiversity status within a coupled socio-ecological perspective. PloS one, 8(4), e60284.
+
+Stevens JD, Bonfil R, Dulvy K, Walker PA (2000) The effects of fishing on sharks, rays and chimaeras (Chondrichthyes) and the implications for marine ecosystems. ICES Journal of Marine Science 57:476-494.
 
 
 
