@@ -13,6 +13,13 @@ output:
 ```{r setup, include=FALSE}
 #This chunk sets up the initial options for the document. They can be overwriten in any othe chunk
 knitr::opts_chunk$set(echo = FALSE)
+
+suppressPackageStartupMessages({
+  library(RColorBrewer)
+  library(ggplot2)
+  library(tidyr)
+  library(dplyr)
+})
 ```
 
 ##Introduction
@@ -49,46 +56,41 @@ The authors analyzed the IUCN Red List data further by obtaining the listed spec
 ![Figure 3](images/F4.Large.jpg)
 </div>
 
-**Fish-Ecol Project**
-
-We created two different Shiny Applications. The first one represents ** JC **
-
-![Figure 4](images/fish-ecol pic.png)
-
-
-Do we need the code below? ** JC **
-```{r, TaxApp, eval=FALSE}
-library(shiny)
-runGitHub("fish-ecol.github.io", "fish-ecol", subdir = "Shiny-fish-ecol/")
-
-```
-
-
-```{r, MapApp, eval=FALSE}
-
-runGitHub("fish-ecol/fish-ecol.github.io", subdir="iucn_map")
-
-```
-
-
 
 ## Methods
 
-Our objectives were to provide an overall assesment of the state of fish species in the world. We created an R package (`fish.ecol`), that is available in the release version of our [GitHub Repository](https://github.com/fish-ecol/fish.ecol/releases/tag/v1.0). Within the`fish.ecol` package, we created two main functions: `fish.ecol::Extantify()` and `fish.ecol::iucn_index()`.
+Our objectives were to provide an overall assesment of the state of fish species in the world. We created an R package (`fish.ecol`), that is available in the release version of our [GitHub Repository](https://github.com/fish-ecol/fish.ecol/releases/tag/v1.0), or can be directly installed with `devtools::install_github(repo="fish-ecol/fish.ecol")`.
 
 Prior to the creation and use of our two main functions, we needed to extract data from the IUCN Red List on species information by country. With the use of several python scripts (developed by an external software engineer), we extracted the data into a simple format from html pages with additional text information. Although we did not use all of this data, it provides a useful source of further analysis. 
 
 The output of these scripts were joined with data sheets directly downloadable from the IUCN Red List to provide more information on species habitats and taxonomic levels. The resulting data table in long format was used as the basis for all further analyses, which required a function for simple manipulation of data.
 
-The function `fish.ecol::Extantify()` was created to address this need as a data extraction tool for simple usage. It wrapped a number of data needs into a single function such as removing presence data outside of our scope (regionally extinct species or uncertain distributions) and non-coastal countries in the output. Additionally, it provided a flexible framework for subsetting the data output to reduce the number of code lines needed in our analyses.
+Within the`fish.ecol` package, we created two main functions: `fish.ecol::Extantify()` and `fish.ecol::iucn_index()`. The function `fish.ecol::Extantify()` was created to address this need as a data extraction tool for simple usage. It wrapped a number of data needs into a single function such as removing presence data outside of our scope (regionally extinct species or uncertain distributions) and non-coastal countries in the output. Additionally, it provided a flexible framework for subsetting the data output to reduce the number of code lines needed in our analyses.
 
-`fish.ecol::iucn_index()` ** JC **
+The function `fish.ecol::iucn_index()` was created to standarize the assesment of IUCN status for each country. The function essentialy calculates a weighted average for IUCN's categories. It can calculate it as an absolute index, or a relative index (0 to 1). The weights of each category can be supplied by the user, thus allowing it to virtualy ignore custom categories. When combined with `fish.ecol::Extantify()` and `dplyr::summarise()`, we can obtain a score for each country. The mathematical expression for both ways of calculating the index are provided below:
+
+Weighted average $$score=\frac{\sum_{i=1}^n W_i X_i}{\sum_{i=1}^n X_i}$$
+
+Relative weighted average $$score=\frac{\sum_{i=1}^n W_i X_i}{W_n \sum_{i=1}^n X_i}$$
+
+Where $W$ is a vector containing the weights, and $X$ contains the counts for each category $i$. With al IUCN categories, $n=7$.
+
+
+## Fish-Ecol Apps
+
+We created two different Shiny Applications. The first one (Fig. 4) represents a taxonomic tree of Elasmobranch species. The user can select between Endangered or Criticaly Endangered. The app can be accesed here <https://faundez.shinyapps.io/Shiny-fish-ecol/>, or called with `shiny::runGitHub("fish-ecol/fish-ecol.github.io", subdir = "Shiny-fish-ecol/")`
+
+![Figure 4](images/fish-ecol pica.png)
+
+We also created an interactive map where our iucn index is represented by country (Fig. 5). The user can choose which taxon to get information from, and modify the type of index to be shown. This app uses our `fish.ecol` package, and thus does not run on the Shiny App Server (yet). Nevertheless, it can be run locally with the following: `shiny::runGitHub("fish-ecol/fish-ecol.github.io", subdir="iucn_map")`.
+
+![Figure 5](images/fish-ecol pic.png)
 
 ## Results
 
 In our analysis, we examined the two primary taxonomic classes of marine fish: Actinopterygii and Chondrichthyes as listed in the IUCN Red List (Figure 5). In particular we were interested in examining the differences between the IUCN listing status for the two groups. Interestingly, Chondrichthyes had not only a higher proportion of species in the three threat categories, Critically Endangered (CR), Endangered (EN), and Vulnerable (VU), but also more species in the Data Deficient (DD) category. This is of particular concern as it means the class of Chondrichthyes is less studied and may have a higher number of threatened species in it. For conservation, priority may be on funding research into the understudied species.
 
-```{r IUCN Taxonomic Graphs,echo=FALSE,fig.width=9, fig.height=6}
+```{r IUCN Taxonomic Graphs,echo=FALSE,fig.width=9, fig.height=6, fig.cap="Figure 6. Species Category Percentages By Class"}
 Taxonomic=read.csv("./Data/Taxonomic_and_Status.csv")
 #Note that some of the scientific names are a little bit funky in these files. They seem to have not too much information on them and as such have weird characters that may confuse any code used for joining and such.
 
@@ -97,9 +99,6 @@ Taxonomic$Category[grep("LR/cd|LR/lc",Taxonomic$Category)]="LC"
 Taxonomic$Category[grep("LR/nt",Taxonomic$Category)]="NT"
 Taxonomic$Category[grep("EW",Taxonomic$Category)]="EX"
 Taxonomic$Category=factor(Taxonomic$Category,levels=c("EX","CR","EN","VU","NT","LC","DD")) 
-
-library(RColorBrewer)
-library(ggplot2)
 
 SummaryTable=data.frame(table(Taxonomic$Category,Taxonomic$Class))
 names(SummaryTable)=c("GlobalStatus","Class","Count")
@@ -117,7 +116,6 @@ CategoryGraph=ggplot(data=SummaryTable1,aes(x=Class,y=Count,fill=GlobalStatus,or
     scale_y_continuous(labels = scales::percent)+
     ggtitle(NULL)+
     theme_bw()+
-    ggtitle("Species Category Percentages By Class")+
     scale_x_discrete(labels=c("ACTINOPTERYGII"="Actinopterygii (n=13442)","CHONDRICHTHYES"="Chondrichthyes (n=1138)"))+
     geom_bar(stat="identity",color="black",position="fill",show.legend=FALSE)+
     xlab(NULL)+
@@ -125,13 +123,34 @@ CategoryGraph=ggplot(data=SummaryTable1,aes(x=Class,y=Count,fill=GlobalStatus,or
 
 CategoryGraph
 ```
-Figure 5
+
+We also performed a deeper analysis within Elasmobranch species, which are under significant fishing pressure throughout the world. Within Elasmobranchs, The Order Squatiniformes was the most vulnerable of all, with a great proportion of the species identified as Critical (CR), Endangered (EN) or Vulnerable (VU). Off the shores of Baja California, Mexico, a member of this order *Squatina californica* has received heavy angling pressure, and their populations have significantly declined (Domínguez-Reza, pers. com.). Lamniform sharks were also significantly threatened, as a portion of the species have been marked as Critical (CR) and Vulnerable (VU).
+
+```{r, echo=FALSE, fig.cap="Figure 7. Categories for each Order within Elasmobranch"}
+
+elasmo <- read.csv("Data/Elasmo.csv") %>%
+  group_by(Category, Order) %>%
+  summarise(Count=n()) %>%
+  group_by(Order) %>%
+  mutate(countT= sum(Count)) %>%
+  group_by(Category, add=TRUE) %>%
+  mutate(per=round(100*Count/countT,2))
+
+Fish2=ggplot(data=elasmo, aes(x=Order, y=per, fill=Category))+
+  geom_bar(stat="identity")+
+  scale_fill_brewer(palette="Set1")+
+  theme_bw()+
+  coord_flip()+
+  labs(y="Percent of Species")
+
+Fish2
+```
 
 ## Discussion
 
-Discussion Discuss the implications of your findings. Include recommendations for future analysis.
+The reduction in trophic levels have been showed in 30 of the 48 largest marine ecosystems on the planet (Essington et al. 2006). “Fishing down the marine food webs”: a gradual change in landings from long-lived, upper trophic level species to short-lived, lower trophic species (Pauly et al. 1998) and “fishing through the food web”: the decline in mean trophic levels of fisheries landings is due to increased exploitation of the lower trophic levels of marine food webs (Essington et al. 2006), are two explanations that science is giving for why we shouldn’t extract high number of top predators from the marine environment.
 
-The reduction in trophic levels have been showed in 30 of the 48 largest marine ecosystems on the planet (Essington et al. 2006). “Fishing down the marine food webs”: a gradual change in landings from long-lived, upper trophic level species to short-lived, lower trophic species (Pauly et al. 1998) and “fishing through the food web”: the decline in mean trophic levels of fisheries landings is due to increased exploitation of the lower trophic levels of marine food webs (Essington et al. 2006); are two explanations that science is giving for why we shouldn’t extract high number of top predators from a marine environment; basically we are altering the energetic balance within food webs. Between the most targeted groups of top predators by fisheries and the impacts of by-catch it is Chondrichthyes, literature highlight sharks and rays that are considered to be among the most endangered vertebrate groups in the world (Dulvy et al. 2014). Therefore, we focused our work in the Chondrichthyes class, where great concern is driving research efforts to evaluate their condition. We made available two interactive visualizations of Chondrichthyes with IUCN data. Our map visualization provides a useful look at a country-level, showing which countries have most species in the highest IUCN categories of dander (CR = Critically endangered and EN = Endangered). This map can lead scientists, managers and conservation efforts to prioritize countries “areas” on where to focus their actions. Our second interactive visualization is a phylum tree that allows to find on detail which Order, Family, Genus and Species are in CR or EN categories inside of the Chondrichthyes class. The information displayed in the phylum tree can help to easily differentiate between species that are with extremely high risk of extinction (CR) from species that have high risk of extinction (EN). This is also key information for conservation, management or research over specific species or phyla groups. 
+Between the most targeted groups of top predators by fisheries and the impacts of by-catch it is Chondrichthyes, literature highlight sharks and rays that are considered to be among the most endangered vertebrate groups in the world (Dulvy et al. 2014). Therefore, we focused our work in the Chondrichthyes class, where great concern is driving research efforts to evaluate their condition. We made available two interactive visualizations of Chondrichthyes with IUCN data. Our map visualization provides a useful look at a country-level, showing which countries have most species in the highest IUCN categories of danger (CR = Critically endangered and EN = Endangered). This map can lead scientists, managers and conservation efforts to prioritize countries “areas” on where to focus their actions. Our second interactive visualization is a phylum tree that allows to find on detail which Order, Family, Genus and Species are in CR or EN categories inside of the Chondrichthyes class. The information displayed in the phylum tree can help to easily differentiate between species that are with extremely high risk of extinction (CR) from species that have high risk of extinction (EN). This is also key information for conservation, management or research over specific species or phyla groups. 
 
 
 ## References

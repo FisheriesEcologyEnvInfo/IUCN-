@@ -42,57 +42,27 @@ head(Extantify()[,1:4])
 
 ## Methodology (part 2)
 
->- Bullet 2 ** others ** add anything else here about methodology
->- Bullet 3
+- An index to asses global status
+- `fish.ecol::iucn_index()`
 
-```{r cars, echo = TRUE}
-summary(cars)
-```
+>- Weighted average $$score=\frac{\sum_{i=1}^n W_i X_i}{\sum_{i=1}^n X_i}$$
+
+>- Relative weighted average $$score=\frac{\sum_{i=1}^n W_i X_i}{W_n \sum_{i=1}^n X_i}$$
+
+>- Where $W$ is a vector containing the weights, and $X$ contains the counts for each category $i$. With al IUCN categories, $n=7$.
 
 ## Results and Visualizations
 
-```{r IUCN Taxonomic Graphs,echo=FALSE,fig.width=9, fig.height=6}
-Taxonomic=read.csv("./Data/Taxonomic_and_Status.csv")
-#Note that some of the scientific names are a little bit funky in these files. They seem to have not too much information on them and as such have weird characters that may confuse any code used for joining and such.
+![](images/two.png)
 
-#convert low count categories to closest related cateogry (consolidating categories-- we can also just remove them). #note that grep below finds the index of LR/cd OR LR/lc.
-Taxonomic$Category[grep("LR/cd|LR/lc",Taxonomic$Category)]="LC" 
-Taxonomic$Category[grep("LR/nt",Taxonomic$Category)]="NT"
-Taxonomic$Category[grep("EW",Taxonomic$Category)]="EX"
-Taxonomic$Category=factor(Taxonomic$Category,levels=c("EX","CR","EN","VU","NT","LC","DD")) 
+## Results and Visualizations
 
-library(RColorBrewer)
-library(ggplot2)
+![](images/elasmo.png)
 
-SummaryTable=data.frame(table(Taxonomic$Category,Taxonomic$Class))
-names(SummaryTable)=c("GlobalStatus","Class","Count")
-
-colours=brewer.pal(name="OrRd", n=nlevels(SummaryTable$GlobalStatus))
-names(colours)=rev(levels(SummaryTable$GlobalStatus))
-
-SummaryTable1=SummaryTable[SummaryTable$Class=="ACTINOPTERYGII"|SummaryTable$Class=="CHONDRICHTHYES",]
-
-CategoryGraph=ggplot(data=SummaryTable1,aes(x=Class,y=Count,fill=GlobalStatus,order=GlobalStatus,width=.3))+
-    geom_bar(stat="identity",show.legend=T,position="fill")+
-    guides(fill=guide_legend(reverse=TRUE))+
-    scale_fill_manual(values=colours,labels=c("Extinct","Critically Endangered","Endangered","Vulnerable","Near Threatened","Least Concern","Data Deficient"))+
-    ylab("Percent of Species")+
-    scale_y_continuous(labels = scales::percent)+
-    ggtitle(NULL)+
-    theme_bw()+
-    ggtitle("Species Category Percentages By Class")+
-    scale_x_discrete(labels=c("ACTINOPTERYGII"="Actinopterygii (n=13442)","CHONDRICHTHYES"="Chondrichthyes (n=1138)"))+
-    geom_bar(stat="identity",color="black",position="fill",show.legend=FALSE)+
-    xlab(NULL)+
-    theme(legend.background = element_rect(colour = "black"),plot.title = element_text(size = 17, vjust = 2),axis.text=element_text(size=12),axis.title=element_text(size=15,vjust = 1),legend.title=element_blank(),legend.text=element_text(size=13))
-
-CategoryGraph
-```
 
 ## TaxApp
 
-
-```{r, TaxApp, output="asis"}
+```{r, TaxApp, output="asis", message=FALSE}
 library(shiny)
 library(networkD3)
 
@@ -263,5 +233,20 @@ dataset=Extantify(dir="a")
 iucn_map(dataset)
 
 ```
+
 ## Final Remarks
+
+- Fishing down and through the marine food webs (Pauly et al. 1998)
+
+>- sharks and rays are considered  the most endangered vertebrates (Dulvy et al. 2014)
+
+>- This map can lead scientists, managers and conservation efforts to prioritize countries “areas” on where to focus their actions.
+
+
+
+
+
+
+
+
 

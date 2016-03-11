@@ -79,11 +79,22 @@ How many species are listed as eac category by Order?
 
 ```{r, echo=FALSE, fig.cap="Categories for ech Order"}
 
-ggplot(data=elasmo, aes(Order))+
-  geom_bar(aes(fill=Category))+
+elasmo2 <- read.csv("Data/Elasmo.csv") %>%
+  group_by(Category, Order) %>%
+  summarise(Count=n()) %>%
+  group_by(Order) %>%
+  mutate(countT= sum(Count)) %>%
+  group_by(Category, add=TRUE) %>%
+  mutate(per=round(100*Count/countT,2))
+
+Fish2=ggplot(data=elasmo2, aes(x=Order, y=per, fill=Category))+
+  geom_bar(stat="identity")+
   scale_fill_brewer(palette="Set1")+
   theme_bw()+
-  coord_flip()
+  coord_flip()+
+  labs(y="Percent of Species")
+
+Fish2
 
 ```
 
