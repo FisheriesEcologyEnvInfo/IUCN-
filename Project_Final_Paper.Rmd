@@ -82,7 +82,7 @@ We created two different Shiny Applications. The first one (Fig. 4) represents a
 
 ![Figure 4](images/fish-ecol pica.png)
 
-We also created an interactive map where our iucn index is represented by country (Fig. 5). The user can choose which taxon to get information from, and modify the type of index to be shown. This app uses our `fish.ecol` package, and thus does not run on the Shiny App Server (yet). Nevertheless, it can be run locally with the following: `shiny::runGitHub("fish-ecol/fish-ecol.github.io", subdir="iucn_map")`.
+We also created an interactive map where our iucn index is represented by country (Fig. 5). The user can choose which taxon to get information from, and modify the type of index to be shown. This app uses our `fish.ecol` package, and is available at <https://jcvd.shinyapps.io/iucn_map/>. It can be run locally with the following: `shiny::runGitHub("fish-ecol/fish-ecol.github.io", subdir="iucn_map")`.
 
 ![Figure 5](images/fish-ecol pic.png)
 

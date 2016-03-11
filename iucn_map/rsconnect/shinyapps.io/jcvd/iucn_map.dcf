@@ -2,8 +2,8 @@ name: iucn_map
 account: jcvd
 server: shinyapps.io
 appId: 88100
-bundleId: 391852
+bundleId: 393193
 url: https://jcvd.shinyapps.io/iucn_map/
-when: 1457581264.84698
+when: 1457710559.29488
 asMultiple: FALSE
 asStatic: FALSE

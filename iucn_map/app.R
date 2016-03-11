@@ -7,6 +7,88 @@
 #    http://shiny.rstudio.com/
 #
 
+Extantify=function(subsetcolumns=NA,factors=NA, dir="a"){
+  
+  if(length(subsetcolumns)!=length(factors)){stop("Error: subsetcolumns input is not the same length as the factors input. These should match in ")}
+  
+  if (dir=="a"){
+    #Load in original data set- note this will take a couple seconds
+    LongData=read.csv("./data/Long Format Collected Fish Information IUCN")
+    
+    #Load in land locked data set (ISO3 codes)
+    Landlocked=read.csv("./data/Landlocked.csv")
+  }
+  
+  if (dir=="b"){
+    #Load in original data set- note this will take a couple seconds
+    LongData=read.csv("../fish.ecol/data/Long Format Collected Fish Information IUCN")
+    
+    #Load in land locked data set (ISO3 codes)
+    Landlocked=read.csv("../fish.ecol/data/Landlocked.csv")
+  }
+  
+  #Exclude landlocked countries
+  OceanNationsOnly=LongData[!LongData$CountryISO3%in%Landlocked$Landlocked_Countries,]
+  
+  #Find the extant classifications: 1- Introduced 2- Native 6- Reintroduced
+  extantIDX=grepl("1|2|6",as.character(OceanNationsOnly$Species_Presence))
+  
+  extant=OceanNationsOnly[extantIDX,-c(1,5,6)]
+  
+  if(is.na(subsetcolumns[1])){return(extant)}else{
+    for(i in 1:length(subsetcolumns)){
+      IDXl=grepl(paste(factors[[i]],collapse="|"),extant[[subsetcolumns[[i]]]])
+      extant=extant[IDXl,]
+    }
+    return(extant)
+  }
+}
+
+
+iucn_index=function(data, scores=c(1,2,3,4,5,6,7), type="a"){
+  
+  # agregar un if que defina que tipo de dato es
+  
+  data=as.factor(data)
+  
+  S=summary(data)
+  SS=data.frame(category=names(S),count=S)
+  
+  all=data.frame(c("DD", "LC", "LR/nt", "NT", "VU", "EN", "CR"))
+  colnames(all)=c("category")
+  
+  S=left_join(all, SS, by="category")
+  
+  S$count[is.na(S$count)]=0
+  
+  ifelse (type=="a",
+          {
+            index=(scores[1]*S$count[S$category=="DD"]+
+                     scores[2]*S$count[S$category=="LC"]+
+                     scores[3]*S$count[S$category=="LR/nt"]+
+                     scores[4]*S$count[S$category=="NT"]+
+                     scores[5]*S$count[S$category=="VU"]+
+                     scores[6]*S$count[S$category=="EN"]+
+                     scores[7]*S$count[S$category=="CR"]
+            )/sum(S$count)
+          },
+          {
+            index=(scores[1]*S$count[S$category=="DD"]+
+                     scores[2]*S$count[S$category=="LC"]+
+                     scores[3]*S$count[S$category=="LR/nt"]+
+                     scores[4]*S$count[S$category=="NT"]+
+                     scores[5]*S$count[S$category=="VU"]+
+                     scores[6]*S$count[S$category=="EN"]+
+                     scores[7]*S$count[S$category=="CR"]
+            )/(sum(S$count)*scores[7])
+          }
+  )
+  
+  
+  return(index)
+  
+}
+
 iucn_map=function(dataset){
 
   library(shiny)
@@ -14,7 +96,6 @@ iucn_map=function(dataset){
   library(tidyr)
   library(googleVis)
   library(readr)
-  library(fish.ecol)
 
 # Define UI for application that draws a histogram
 ui <- shinyUI(fluidPage(
@@ -69,7 +150,7 @@ server <- shinyServer(function(input, output) {
      ind=seq(1,7)
      cat2val=data.frame(Category=cat, index=ind)
      
-     conversion <- read_csv(file="../Data/CountryConversion.csv")
+     conversion <- read_csv(file="./data/CountryConversion.csv")
      
      
      dataset2 = dataset %>% #generating the fishDataCountries output
@@ -112,10 +193,12 @@ server <- shinyServer(function(input, output) {
 shinyApp(ui = ui, server = server)
 }
 
-library(devtools)
+
+
+#library(devtools)
 #install_github(repo="fish-ecol/fish.ecol") #So that the server recognizes our functions
-library(fish.ecol)
-load_all("../fish.ecol")
-dataset=Extantify(dir="b")
+#library(fish.ecol)
+#load_all("../fish.ecol")
+dataset=Extantify(dir="a")
 iucn_map(dataset)
 
