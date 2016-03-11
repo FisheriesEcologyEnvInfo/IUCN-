@@ -51,8 +51,12 @@ The authors analyzed the IUCN Red List data further by obtaining the listed spec
 
 **Fish-Ecol Project**
 
-We created two different Shiny Applications. The first one represents
+We created two different Shiny Applications. The first one represents ** JC **
 
+![Figure 4](images/fish-ecol pic.png)
+
+
+Do we need the code below? ** JC **
 ```{r, TaxApp, eval=FALSE}
 library(shiny)
 runGitHub("fish-ecol.github.io", "fish-ecol", subdir = "Shiny-fish-ecol/")
@@ -72,21 +76,19 @@ runGitHub("fish-ecol/fish-ecol.github.io", subdir="iucn_map")
 
 Our objectives were to provide an overall assesment of the state of fish species in the world. We created an R package (`fish.ecol`), that is available in the release version of our [GitHub Repository](https://github.com/fish-ecol/fish.ecol/releases/tag/v1.0). Within the`fish.ecol` package, we created two main functions: `fish.ecol::Extantify()` and `fish.ecol::iucn_index()`.
 
-`fish.ecol::Extantify()` creates ## NIKO HERE =) ?
+Prior to the creation and use of our two main functions, we needed to extract data from the IUCN Red List on species information by country. With the use of several python scripts (developed by an external software engineer), we extracted the data into a simple format from html pages with additional text information. Although we did not use all of this data, it provides a useful source of further analysis. 
 
-`fish.ecol::iucn_index()` 
+The output of these scripts were joined with data sheets directly downloadable from the IUCN Red List to provide more information on species habitats and taxonomic levels. The resulting data table in long format was used as the basis for all further analyses, which required a function for simple manipulation of data.
 
+The function `fish.ecol::Extantify()` was created to address this need as a data extraction tool for simple usage. It wrapped a number of data needs into a single function such as removing presence data outside of our scope (regionally extinct species or uncertain distributions) and non-coastal countries in the output. Additionally, it provided a flexible framework for subsetting the data output to reduce the number of code lines needed in our analyses.
 
-Reference a Github release of your organization’s repository, which should contain all the commented code for your analysis.
-NOTE: JC could you take this one?
-
-We have the following data:
-
-- IUCN: Data on endangerment of fish species (Chondricthyes). The data will include trend, global status, country, habitat (freshwater or marine), and other species details. Some of these data sets will need to be joined.
+`fish.ecol::iucn_index()` ** JC **
 
 ## Results
 
-```{r IUCN Taxonomic Graphs,echo=FALSE,fig.width=10, fig.height=6}
+In our analysis, we examined the two primary taxonomic classes of marine fish: Actinopterygii and Chondrichthyes as listed in the IUCN Red List (Figure 5). In particular we were interested in examining the differences between the IUCN listing status for the two groups. Interestingly, Chondrichthyes had not only a higher proportion of species in the three threat categories, Critically Endangered (CR), Endangered (EN), and Vulnerable (VU), but also more species in the Data Deficient (DD) category. This is of particular concern as it means the class of Chondrichthyes is less studied and may have a higher number of threatened species in it. For conservation, priority may be on funding research into the understudied species.
+
+```{r IUCN Taxonomic Graphs,echo=FALSE,fig.width=9, fig.height=6}
 Taxonomic=read.csv("./Data/Taxonomic_and_Status.csv")
 #Note that some of the scientific names are a little bit funky in these files. They seem to have not too much information on them and as such have weird characters that may confuse any code used for joining and such.
 
@@ -105,43 +107,25 @@ names(SummaryTable)=c("GlobalStatus","Class","Count")
 colours=brewer.pal(name="OrRd", n=nlevels(SummaryTable$GlobalStatus))
 names(colours)=rev(levels(SummaryTable$GlobalStatus))
 
-SummaryTable1=SummaryTable[SummaryTable$Class=="ACTINOPTERYGII",]
-SummaryTable2=SummaryTable[SummaryTable$Class=="CHONDRICHTHYES",]
+SummaryTable1=SummaryTable[SummaryTable$Class=="ACTINOPTERYGII"|SummaryTable$Class=="CHONDRICHTHYES",]
 
-CategoryGraph1=ggplot(data=SummaryTable1,aes(x=Class,y=Count,fill=GlobalStatus,order=GlobalStatus,width=.3))+
-    geom_bar(stat="identity",show.legend=T)+
+CategoryGraph=ggplot(data=SummaryTable1,aes(x=Class,y=Count,fill=GlobalStatus,order=GlobalStatus,width=.3))+
+    geom_bar(stat="identity",show.legend=T,position="fill")+
     guides(fill=guide_legend(reverse=TRUE))+
-    scale_fill_manual(values=colours)+
-    ylab("Number of Species")+
+    scale_fill_manual(values=colours,labels=c("Extinct","Critically Endangered","Endangered","Vulnerable","Near Threatened","Least Concern","Data Deficient"))+
+    ylab("Percent of Species")+
+    scale_y_continuous(labels = scales::percent)+
     ggtitle(NULL)+
     theme_bw()+
-    scale_x_discrete(labels=c("ACTINOPTERYGII"="Actinopterygii","CHONDRICHTHYES"="Chondrichthyes"))+
-    geom_bar(stat="identity",color="black",show.legend=FALSE)+
+    ggtitle("Species Category Percentages By Class")+
+    scale_x_discrete(labels=c("ACTINOPTERYGII"="Actinopterygii (n=13442)","CHONDRICHTHYES"="Chondrichthyes (n=1138)"))+
+    geom_bar(stat="identity",color="black",position="fill",show.legend=FALSE)+
     xlab(NULL)+
-    theme(legend.background = element_rect(colour = "black"),plot.title = element_text(size = 17, vjust = 2),axis.text=element_text(size=14),axis.title=element_text(size=15,vjust = 1),legend.title=element_blank(),legend.text=element_text(size=13))
+    theme(legend.background = element_rect(colour = "black"),plot.title = element_text(size = 17, vjust = 2),axis.text=element_text(size=12),axis.title=element_text(size=15,vjust = 1),legend.title=element_blank(),legend.text=element_text(size=13))
 
-CategoryGraph2=ggplot(data=SummaryTable2,aes(x=Class,y=Count,fill=GlobalStatus,order=GlobalStatus,width=.3))+
-    geom_bar(stat="identity")+
-    guides(fill=guide_legend(reverse=TRUE))+
-    scale_fill_manual(values=colours)+
-    ylab("Number of Species")+
-    ggtitle(NULL)+
-    theme_bw()+
-    scale_x_discrete(labels=c("ACTINOPTERYGII"="Actinopterygii","CHONDRICHTHYES"="Chondrichthyes"))+
-    geom_bar(stat="identity",color="black",show.legend=FALSE)+
-    xlab(NULL)+
-    theme(legend.background = element_rect(colour = "black"),plot.title = element_text(size = 17, vjust = 2),axis.text=element_text(size=14),axis.title=element_text(size=15,vjust = 1),legend.title=element_blank(),legend.text=element_text(size=13))
-
-library(gridExtra)
-library(grid)
-grid.arrange(CategoryGraph1,CategoryGraph2,ncol=2,nrow=1,top=textGrob("IUCN Threat Categories",gp=gpar(fontsize=18)))
-
-
-
+CategoryGraph
 ```
-
-
-Results Present the tables and figures from your analysis along with text that summarizes these findings. You’re encouraged to use sortable tables and interactive figures.
+Figure 5
 
 ## Discussion
 
