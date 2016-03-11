@@ -9,6 +9,10 @@ output:
     toc_depth: 4
 ---
 
+## Link to our final paper
+
+[Here!](http://fish-ecol.github.io/Project_Final_Paper.html)
+
 ##Types of data
 
 We have the following data:
