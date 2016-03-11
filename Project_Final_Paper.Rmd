@@ -72,7 +72,9 @@ runGitHub("fish-ecol/fish-ecol.github.io", subdir="iucn_map")
 
 Our objectives were to provide an overall assesment of the state of fish species in the world. We created an R package (`fish.ecol`), that is available in the release version of our [GitHub Repository](https://github.com/fish-ecol/fish.ecol/releases/tag/v1.0). Within the`fish.ecol` package, we created two main functions: `fish.ecol::Extantify()` and `fish.ecol::iucn_index()`.
 
-`fish.ecol::Extantify()` creates a single
+`fish.ecol::Extantify()` creates ## NIKO HERE =) ?
+
+`fish.ecol::iucn_index()` 
 
 
 Reference a Github release of your organization’s repository, which should contain all the commented code for your analysis.
