@@ -51,15 +51,6 @@ head(Extantify()[,1:4])
 
 >- Where $W$ is a vector containing the weights, and $X$ contains the counts for each category $i$. With al IUCN categories, $n=7$.
 
-## Results and Visualizations
-
-![](images/two.png)
-
-## Results and Visualizations
-
-![](images/elasmo.png)
-
-
 ## TaxApp
 
 ```{r, TaxApp, output="asis", message=FALSE}
@@ -233,6 +224,10 @@ dataset=Extantify(dir="a")
 iucn_map(dataset)
 
 ```
+
+## Results and Visualizations
+
+![](images/elasmo.png)
 
 ## Final Remarks
 
