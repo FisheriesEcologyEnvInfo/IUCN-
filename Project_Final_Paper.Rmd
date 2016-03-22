@@ -75,6 +75,14 @@ Relative weighted average $$score=\frac{\sum_{i=1}^n W_i X_i}{W_n \sum_{i=1}^n X
 
 Where $W$ is a vector containing the weights, and $X$ contains the counts for each category $i$. With al IUCN categories, $n=7$.
 
+BB: want the average extinction risk score per country:
+
+$$
+score_{country} = \frac{\sum_{i}^{N}{w_i}}{N}
+$$
+
+in which the average extinction risk weight ($w$) based on the extinction risk for the species ($i$) across all species found in the country ($N$).
+
 
 ## Fish-Ecol Apps
 
